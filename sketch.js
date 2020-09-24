@@ -30,13 +30,12 @@ let player = {
             y = this.y += ((mouseY-this.y)/meter)*playerSpeed;
         }
 
-    //light beam!
+    //Dani:light beam!
     noStroke();
     fill('yellow');
     let angle = Math.atan2(mouseY-y, mouseX-x);
     translate(x, y);
     rotate(angle);
-    
     triangle(35, 0, 200, 50 , 200, -50);
     }
 }
