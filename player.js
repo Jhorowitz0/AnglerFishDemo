@@ -8,6 +8,7 @@ class Player{
         this.meter = 100;
         this.playerSpeed = 1;
         this.angle = 0;
+        this.emotion = [250,250,250];
     }
 
     draw(center){
@@ -17,6 +18,8 @@ class Player{
         push();
         translate(center.x,center.y);
         rotate(this.angle);
+        noStroke();
+        fill(this.emotion);
         triangle(this.size/2, 0, this.size/2 + this.visual_range, 50 , this.size/2 + this.visual_range, -50);
         pop();
     }
@@ -26,13 +29,19 @@ class Player{
         var xdiff = (mouseX - center.x);
         var ydiff = (mouseY - center.y);
 
+        //moves player
         if(abs(ydiff) > this.size || abs(xdiff) > this.size) {
             this.x += xdiff/this.meter*this.playerSpeed;
             this.y += ydiff/this.meter*this.playerSpeed;
         }
 
+        //aupdates angle
         this.angle = Math.atan2(mouseY-(center.x - this.size/2)
                             , mouseX-(center.y - this.size/2));
+    }
+
+    setEmotion(color){
+        this.emotion = color;
     }
 
     getX(){
