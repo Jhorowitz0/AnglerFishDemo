@@ -38,6 +38,7 @@ const contraints = {
 };
 
 function startVideo(){
+    console.log(navigator.appName);
     navigator.mediaDevices.getUserMedia(
         {video : true}
     )
