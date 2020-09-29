@@ -22,14 +22,15 @@ function setup() {
 }
 
 function mousePressed() {
-    faceReader.readFace();
+    faceReader.readFace(); //gets emotion from face on campera if there is one
+    player.setEmotion(faceReader.getEmotionColor()); //updates player emotion color
 }
 
 function draw() {
     background('black');
 
     //faceReader.readFace(); //gets emotion from face on campera if there is one
-    player.setEmotion(faceReader.getEmotionColor()); //updates player emotion color
+    //player.setEmotion(faceReader.getEmotionColor()); //updates player emotion color
 
     player.update(center); //updates player info
     player.draw(center); //draws the player on the screen
