@@ -21,9 +21,13 @@ function setup() {
     center = { x: windowWidth/2, y: windowHeight/2}; //sets center to the middle of screen
 }
 
+function mousePressed() {
+    faceReader.readFace();
+}
+
 function draw() {
     background('black');
-    
+
     //faceReader.readFace(); //gets emotion from face on campera if there is one
     player.setEmotion(faceReader.getEmotionColor()); //updates player emotion color
 
