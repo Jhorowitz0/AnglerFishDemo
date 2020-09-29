@@ -15,7 +15,6 @@ class FaceReader {
 
     //takes an expression and updates the emotion variables
     updateEmotions(expressions){
-        console.log(expressions.angry,expressions.happy,expressions.sad);
         this.angry = expressions.angry * 255 + 128;
         this.sad = expressions.sad * 255 + 128;
         this.happy = expressions.happy * 255 + 128;
@@ -40,6 +39,5 @@ class FaceReader {
 
     getEmotionColor(){
         return color(this.angry,this.happy,this.sad);
-        console.log(this.angry,this.happy,this.sad);
     }
 }
