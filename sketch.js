@@ -36,6 +36,8 @@ setInterval(function() {
 }, 400);
 
 function draw() {
+    clear();
+    blendMode(ADD);
     let lightness = 100 - map(player.getY(), -1000, 1000, 90, 100);
     background('hsl(234, 67%, ' + lightness + '%)');
 
