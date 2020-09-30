@@ -17,7 +17,7 @@ class Player{
             fill(this.color);
             circle(center.x, center.y, this.size);
         }else{
-            image(this.image, center.x, center.y,100,60);
+            image(this.image, center.x, center.y,100,60); //how to draw images: image(imageVariable, xpos, ypos, width, height);
         }
 
         push();
