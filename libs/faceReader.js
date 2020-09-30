@@ -7,7 +7,7 @@
 
 //-------------------CLASS FOR OBJECT TO GET EMOTIONS-------------
 class FaceReader {
-    constructor(){
+    constructor() {
         this.angry = 128;
         this.sad = 128;
         this.happy = 128;  
@@ -20,10 +20,9 @@ class FaceReader {
         this.happy = expressions.happy * 255 + 128;
     }
 
-    async readFace(){
+    async readFace() {
         var detections = await faceapi
             .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()) //get all faces in view
-            .withFaceLandmarks()                                          //get 68 face landmarks
             .withFaceExpressions();                                       //get scores for every expression
             //possible expressions: neutral, happy, sad, angry, fearful
 
@@ -37,7 +36,7 @@ class FaceReader {
         }
     }
 
-    getEmotionColor(){
+    getEmotionColor() {
         return color(this.angry,this.happy,this.sad);
     }
 }

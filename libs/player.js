@@ -40,9 +40,9 @@ class Player{
             this.y += ydiff/this.meter*this.playerSpeed;
         }
 
-        //aupdates angle
-        this.angle = Math.atan2(mouseY-(center.x - this.size/2)
-                            , mouseX-(center.y - this.size/2));
+        //updates angle
+        this.angle = (Math.atan2(mouseY-center.y
+                               , mouseX-center.x));
     }
 
     setImage(image){

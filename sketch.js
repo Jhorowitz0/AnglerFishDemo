@@ -29,17 +29,15 @@ function setup() {
     player.setImage(fishie); //see line 20 in the player file for how to draw images
 }
 
-function mousePressed() {
+//this interval executes every 200ms
+setInterval(function() {
     faceReader.readFace(); //gets emotion from face on campera if there is one
     player.setEmotion(faceReader.getEmotionColor()); //updates player emotion color
-}
+}, 400);
 
 function draw() {
     let lightness = 100 - map(player.getY(), -1000, 1000, 90, 100);
     background('hsl(234, 67%, ' + lightness + '%)');
-
-    //faceReader.readFace(); //gets emotion from face on campera if there is one
-    //player.setEmotion(faceReader.getEmotionColor()); //updates player emotion color
 
     player.update(center); //updates player info
     player.draw(center); //draws the player on the screen
