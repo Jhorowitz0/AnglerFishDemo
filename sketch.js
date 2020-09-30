@@ -27,7 +27,8 @@ function mousePressed() {
 }
 
 function draw() {
-    background('black');
+    let lightness = 100 - map(player.getY(), -1000, 1000, 80, 100);
+    background('hsl(234, 67%, ' + lightness + '%)');
 
     //faceReader.readFace(); //gets emotion from face on campera if there is one
     //player.setEmotion(faceReader.getEmotionColor()); //updates player emotion color
