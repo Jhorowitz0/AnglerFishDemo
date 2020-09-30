@@ -12,6 +12,9 @@ var center; //used to situate eveything on the screen
 
 var player = new Player();//makes a new player object
 
+//image loading:
+var fishie = null;
+
 
 //------------------SETUP AND DRAW--------------------
 
@@ -19,6 +22,11 @@ function setup() {
     createCanvas(windowWidth, windowWidth);
     background('black');
     center = { x: windowWidth/2, y: windowHeight/2}; //sets center to the middle of screen
+
+    //--------image loading------------
+    imageMode(CENTER);
+    fishie = loadImage('sprites/fishie.PNG'); //loading an image to a variable
+    player.setImage(fishie); //see line 20 in the player file for how to draw images
 }
 
 function mousePressed() {

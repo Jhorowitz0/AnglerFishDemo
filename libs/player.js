@@ -9,11 +9,16 @@ class Player{
         this.playerSpeed = 1;
         this.angle = 0;
         this.emotion = [250,250,250];
+        this.image = null;
     }
 
     draw(center){
-        fill(this.color);
-        circle(center.x, center.y, this.size);
+        if(this.image == null){
+            fill(this.color);
+            circle(center.x, center.y, this.size);
+        }else{
+            image(this.image, center.x, center.y,100,60);
+        }
 
         push();
         translate(center.x,center.y);
@@ -38,6 +43,10 @@ class Player{
         //aupdates angle
         this.angle = Math.atan2(mouseY-(center.x - this.size/2)
                             , mouseX-(center.y - this.size/2));
+    }
+
+    setImage(image){
+        this.image = image;
     }
 
     setEmotion(color){
