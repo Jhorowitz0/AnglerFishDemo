@@ -10,7 +10,7 @@ class Player{
         this.angle = 0;
         this.emotion = [250,250,250];
         this.image = null;
-        this.gravity = 0.1;
+        this.gravity = 1;
     }
 
     draw(center){
