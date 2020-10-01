@@ -10,7 +10,7 @@ class Player{
         this.angle = 0;
         this.emotion = [250,250,250];
         this.image = null;
-        this.gravity = 1;
+        this.gravity = 0.1;
     }
 
     draw(center){
@@ -30,7 +30,7 @@ class Player{
         pop();
     }
 
-    update(center){
+    update(center,world){
         //MOUSE CONTROLS
         var xdiff = (mouseX - center.x);
         var ydiff = (mouseY - center.y);
@@ -38,8 +38,14 @@ class Player{
         //moves player
         if(abs(ydiff) > this.size || abs(xdiff) > this.size) {
             this.x += xdiff/this.meter*this.playerSpeed;
-            this.y += (ydiff/this.meter*this.playerSpeed) - this.gravity;
+            this.y += ydiff/this.meter*this.playerSpeed;
         }
+        this.y += this.gravity; //pull of gravity on player
+        this.y = min(this.y,world.boundsY.max);
+        this.y = max(this.y,world.boundsY.min);
+        this.x = min(this.x,world.boundsX.max);
+        this.x = max(this.x,world.boundsX.min);
+
 
         //updates angle
         this.angle = (Math.atan2(mouseY-center.y

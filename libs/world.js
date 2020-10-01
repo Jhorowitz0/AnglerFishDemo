@@ -3,6 +3,9 @@ class World{
         this.offsetX = 0;
         this.offsetY = 0;
         this.objects = [];
+
+        this.boundsY = {min: -6000, max: 300};
+        this.boundsX = {min: -1200, max: 600};
     }
 
     addObject(object){
