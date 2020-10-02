@@ -26,8 +26,8 @@ function setup() {
 
     //--------image loading------------
     imageMode(CENTER);
-    fishie = loadImage('sprites/angler_head.png'); //loading an image to a variable
-    fishTail = loadImage('sprites/angler_tail.png') //optionally assign a tail image
+    fishie = loadImage('sprites/angler_head2.png'); //loading an image to a variable
+    fishTail = loadImage('sprites/angler_tail2.png') //optionally assign a tail image
     player.setImage(fishie); //see line 20 in the player file for how to draw images
     player.setTailImage(fishTail);
 }
