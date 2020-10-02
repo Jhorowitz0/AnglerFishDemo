@@ -19,10 +19,6 @@ var fishTail = null;
 
 //------------------SETUP AND DRAW--------------------
 
-//Dani: I got an error related to the X and Y being undefined in the update function's if statement. I made them global variables for my particle/light effect too
-let x=100;
-let y=100;
-
 function setup() {
     createCanvas(windowWidth, windowWidth);
     background('black');
@@ -33,7 +29,7 @@ function setup() {
     fishie = loadImage('sprites/angler_head2.png'); //loading an image to a variable
     fishTail = loadImage('sprites/angler_tail2.png') //optionally assign a tail image
     player.setImage(fishie); //see line 20 in the player file for how to draw images
-    player.setTailImage(fishTail); 
+    player.setTailImage(fishTail);
 }
 
 //this interval executes every 200ms
