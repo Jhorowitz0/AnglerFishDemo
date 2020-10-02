@@ -14,6 +14,7 @@ var player = new Player();//makes a new player object
 
 //image loading:
 var fishie = null;
+var fishTail = null;
 
 
 //------------------SETUP AND DRAW--------------------
@@ -25,8 +26,10 @@ function setup() {
 
     //--------image loading------------
     imageMode(CENTER);
-    fishie = loadImage('sprites/fishie.PNG'); //loading an image to a variable
+    fishie = loadImage('sprites/angler_head.png'); //loading an image to a variable
+    fishTail = loadImage('sprites/angler_tail.png') //optionally assign a tail image
     player.setImage(fishie); //see line 20 in the player file for how to draw images
+    player.setTailImage(fishTail);
 }
 
 //this interval executes every 200ms

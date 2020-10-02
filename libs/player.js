@@ -3,34 +3,65 @@ class Player{
         this.x = 0;
         this.y = 0;
         this.color = [150,0,0];
-        this.size = 50;
-        this.visual_range = 170;
+        this.size = 100;
+        this.visual_range = 170;            // how far the lightbeam projects
         this.meter = 100;
         this.playerSpeed = 1;
         this.angle = 0;
-        this.emotion = [250,250,250];
+        this.emotion = [250,250,250];       // color is updated via face-api
         this.image = null;
+        this.tailImage = null;              // optional image used for tail
         this.gravity = 0.1;
+        this.rotationDampening = 1/2;       // how much fish body follows mouse
+        this.tailRotationDampening = 2/3    // how much tail follows mouse
     }
 
     draw(center){
-        if(this.image == null){
+        // drawing fish body
+        if(this.image == null) {
+            // default fish body if no image provided
             fill(this.color);
             circle(center.x, center.y, this.size);
-        }else{
-            image(this.image, center.x, center.y,100,60); //how to draw images: image(imageVariable, xpos, ypos, width, height);
-        }
+        } else {
+            push();
+            translate(center.x, center.y);
 
+            // calculating angle and orientation of fish towards mouse
+            let fish_angle = this.angle;             
+            if(mouseX < center.x) { 
+                scale(-1, 1);   
+                // override arctan domain of [-90, 90] degrees by flipping across Y-axis
+                fish_angle = ((this.angle < 0 ? -1 : 1) * Math.PI) - this.angle; 
+            } 
+
+            // draw fish body
+            rotate(fish_angle * this.rotationDampening);
+            imageMode(CENTER);
+            image(this.image, 0, 0, 200, 120); 
+
+            // drawing fish tail (optional)
+            if(this.tailImage != null) {
+                translate(-85, 35);
+                rotate(fish_angle * this.tailRotationDampening);
+                imageMode(CENTER);
+                image(this.tailImage, 0, 0, 200, 120); 
+            }
+            pop();
+        }
+        
+        // Drawing lightbeam triangle
         push();
-        translate(center.x,center.y);
+        translate(center.x, center.y);
         rotate(this.angle);
         noStroke();
         fill(this.emotion);
-        triangle(this.size/2, 0, this.size/2 + this.visual_range, 50 , this.size/2 + this.visual_range, -50);
+        triangle(0, 0                                   // Origin Point
+               , this.size/2 + this.visual_range, 50    // Endpoint 1
+               , this.size/2 + this.visual_range, -50); // Endpoint 2
         pop();
     }
 
-    update(center,world){
+    update(center,world) {
         //MOUSE CONTROLS
         var xdiff = (mouseX - center.x);
         var ydiff = (mouseY - center.y);
@@ -52,19 +83,23 @@ class Player{
                                , mouseX-center.x));
     }
 
-    setImage(image){
+    setImage(image) {
         this.image = image;
     }
 
-    setEmotion(color){
+    setTailImage(tailImage) {
+        this.tailImage = tailImage
+    }
+
+    setEmotion(color) {
         this.emotion = color;
     }
 
-    getX(){
+    getX() {
         return this.x;
     }
 
-    getY(){
+    getY() {
         return this.y;
     }
 }
