@@ -37,14 +37,14 @@ class Player{
             // draw fish body
             rotate(fish_angle * this.rotationDampening);
             imageMode(CENTER);
-            image(this.image, 0, 0, 200, 120); 
+            image(this.image, 0, 0, 200, 180); 
 
             // drawing fish tail (optional)
             if(this.tailImage != null) {
-                translate(-85, 35);
+                translate(-100, 55);
                 rotate(fish_angle * this.tailRotationDampening);
                 imageMode(CENTER);
-                image(this.tailImage, 0, 0, 200, 120); 
+                image(this.tailImage, 0, 0, 200, 180); 
             }
             pop();
         }
