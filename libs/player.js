@@ -10,6 +10,7 @@ class Player{
         this.angle = 0;
         this.emotion = [250,250,250];       // color is updated via face-api
         this.image = null;
+        this.setLightImage = null;
         this.tailImage = null;              // optional image used for tail
         this.gravity = 0.1;
         this.rotationDampening = 1/2;       // how much fish body follows mouse
@@ -17,6 +18,7 @@ class Player{
     }
 
     draw(center){
+        blendMode(ADD);
         // drawing fish body
         if(this.image == null) {
             // default fish body if no image provided
@@ -47,17 +49,36 @@ class Player{
                 image(this.tailImage, 0, 0, 200, 180); 
             }
             pop();
+            blendMode(NORMAL);
         }
         
         // Drawing lightbeam triangle
+        // push();
+        // translate(center.x, center.y);
+        // rotate(this.angle);
+        // noStroke();
+        // fill(this.emotion);
+        // // triangle(0, 0                                   // Origin Point
+        // //        , this.size/2 + this.visual_range, 50    // Endpoint 1
+        // //        , this.size/2 + this.visual_range, -50); // Endpoint 2
+        // if(this.lightImage != null){
+        //     image(this.lightImage, 0, 0, 3000, 2000);
+        // }
+        // pop();
+    }
+
+    drawLight(center){
         push();
         translate(center.x, center.y);
         rotate(this.angle);
         noStroke();
         fill(this.emotion);
-        triangle(0, 0                                   // Origin Point
-               , this.size/2 + this.visual_range, 50    // Endpoint 1
-               , this.size/2 + this.visual_range, -50); // Endpoint 2
+        blendMode(MULTIPLY);
+        ellipse(0,0,3000,3000);
+        if(this.lightImage != null){
+            blendMode(NORMAL);
+            image(this.lightImage, 0, 0, 3000, 2000);
+        }
         pop();
     }
 
@@ -89,6 +110,10 @@ class Player{
 
     setTailImage(tailImage) {
         this.tailImage = tailImage
+    }
+
+    setLighting(image){
+        this.lightImage = image;
     }
 
     setEmotion(color) {
