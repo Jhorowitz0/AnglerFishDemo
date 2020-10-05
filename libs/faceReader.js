@@ -15,9 +15,9 @@ class FaceReader {
 
     //takes an expression and updates the emotion variables
     updateEmotions(expressions){
-        this.angry = expressions.angry * 255 + 5;
-        this.sad = expressions.sad * 255 + 5;
-        this.happy = expressions.happy * 255 + 5;
+        this.angry = expressions.angry * 255 + 50;
+        this.sad = expressions.sad * 255 + 50;
+        this.happy = expressions.happy * 255 + 50;
     }
 
     async readFace() {

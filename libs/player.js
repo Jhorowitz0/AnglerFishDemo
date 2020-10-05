@@ -67,7 +67,7 @@ class Player{
         // pop();
     }
 
-    drawLight(center){
+    drawLight(center, lightness){
         push();
         translate(center.x, center.y);
         rotate(this.angle);
@@ -79,6 +79,7 @@ class Player{
             blendMode(NORMAL);
             image(this.lightImage, 0, 0, 3000, 2000);
         }
+        ellipse(0,0,15,15);
         pop();
     }
 

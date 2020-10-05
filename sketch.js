@@ -49,8 +49,7 @@ setInterval(function() {
 
 function draw() {
     clear();
-    let lightness = 100 - map(player.getY(), -1000, 1000, 90, 100);
-    background('hsl(234, 67%, ' + lightness + '%)');
+    background(0);
 
     player.update(center,world); //updates player info
     player.draw(center); //draws the player on the screen
@@ -58,5 +57,5 @@ function draw() {
     world.update( player.getX(),player.getY() );
     world.draw();
 
-    player.drawLight(center);
+  player.drawLight(center);
 }
