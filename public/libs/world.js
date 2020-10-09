@@ -9,7 +9,7 @@ class World{
         this.boundsX = {min: -1000, max: 1000};
     }
 
-    addParticle(particle){
+    /*addParticle(particle){
         this.particles.push(particle);
     }
 
@@ -17,7 +17,7 @@ class World{
         this.objects.push(object);
     }
 
-    /*update(playerX, playerY){
+    update(playerX, playerY){
         this.offsetX = (playerX - (windowWidth/2)) * -1;
         this.offsetY = (playerY - (windowHeight/2)) * -1;
         this.objects.forEach(object => {

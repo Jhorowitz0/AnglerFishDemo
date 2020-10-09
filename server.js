@@ -14,8 +14,13 @@ var meter = 100;
 var playerSpeed = 1;
 
 //Vals for our world. Managed by our server
-var world = new World();
-//BUILD WORLD OBJECTS HERE
+const WIDTH = 1000;
+const HEIGHT = 1000;
+var bounds = {
+    x: { min: -500, max: 500},
+    y: { min: -500, max: 500}
+}
+
 
 //Entire gamestate will consist of prebuilt objects and player objects
 var gameState = {
@@ -34,8 +39,8 @@ io.on('connection', function (socket) {
     socket.emit('message', 'You are connected!');
     
     gameState.players[socket.id] = {
-        x: random(100,WIDTH-100),
-        y: random(100,HEIGHT-100),
+        x: Math.random(bounds.x.min,bounds.x.max),
+        y: Math.random(bounds.y.min,bounds.y.max),
         angle: 0,
         vX: 0,
         vY: 0,
@@ -69,13 +74,22 @@ setInterval(function() {
         var y = p.controls.yDiff;
 
         //moves player
-        if(abs(x) > deadZone || abs(y) > deadZone) {
+        if(Math.abs(x) > deadZone || Math.abs(y) > deadZone) {
             p.vX = x/meter*playerSpeed;
             p.vY = y/meter*playerSpeed;
+        }
+        else {
+            p.vX = 0;
+            p.vY = 0;
         }
 
         p.x += p.vX;
         p.y += p.vY;
+        p.y = Math.min(p.y,bounds.y.max);
+        p.y = Math.max(p.y,bounds.y.min);
+        p.x = Math.min(p.x,bounds.x.max);
+        p.x = Math.max(p.x,bounds.x.min);
+
         p.angle = p.controls.angle;
         p.light = p.controls.emotion;
     }
