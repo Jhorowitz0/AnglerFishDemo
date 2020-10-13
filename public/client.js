@@ -66,6 +66,16 @@ function draw() {
     var myPlayer = gameState.players[socket.id];
 
     blendMode(ADD);
+    //Lerp myPlayer position
+    var now = Date.now();
+    var timeSinceUpdate = (now - lastServerUpdate);
+    var t = timeSinceUpdate / SERVER_UPDATE_TIME;
+
+    var myPreX = myPlayer.x + myPlayer.vX;
+    var myPreY = myPlayer.y + myPlayer.vY;
+    var myInterX = lerp(myPlayer.x, myPreX, t);
+    var myInterY = lerp(myPlayer.y, myPreY, t);
+
     // drawing fish body
     push();
     translate(center.x, center.y);
@@ -99,10 +109,21 @@ function draw() {
 
         player = gameState.players[playerId];
         blendMode(ADD);
+
+        //Lerp position vals
+        var now = Date.now();
+        var timeSinceUpdate = (now - lastServerUpdate);
+        var t = timeSinceUpdate / SERVER_UPDATE_TIME;
+
+        var predictedX = player.x + player.vX;
+        var predictedY = player.y + player.vY;
+        var interX = lerp(player.x, predictedX, t);
+        var interY = lerp(player.y, predictedY, t);
         // drawing fish body
+
         push();
-        var displace = { x: player.x - myPlayer.x,
-                         y: player.y - myPlayer.y};
+        var displace = { x: interX - myInterX,
+                         y: interY - myInterY};
         translate(center.x + displace.x, center.y + displace.y);
         // calculating angle and orientation of fish towards mouse
         let fish_angle = player.angle;

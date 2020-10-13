@@ -74,21 +74,30 @@ setInterval(function() {
         var y = p.controls.yDiff;
 
         //moves player
-        if(Math.abs(x) > deadZone || Math.abs(y) > deadZone) {
+        if(Math.abs(x) > deadZone) {
             p.vX = x/meter*playerSpeed;
-            p.vY = y/meter*playerSpeed;
+
+            if(p.vX > 0 && p.x > bounds.x.max)
+                p.vX = 0;
+            if(p.vX < 0 && p.x < bounds.x.min)
+                p.vX = 0;
         }
-        else {
+        else 
             p.vX = 0;
-            p.vY = 0;
+        
+        if(Math.abs(y) > deadZone) {
+            p.vY = y/meter*playerSpeed;
+
+            if(p.vY > 0 && p.y > bounds.y.max)
+                p.vY = 0;
+            if(p.vY < 0 && p.y < bounds.y.min)
+                p.vY = 0;
         }
+        else
+            p.vY = 0;
 
         p.x += p.vX;
         p.y += p.vY;
-        p.y = Math.min(p.y,bounds.y.max);
-        p.y = Math.max(p.y,bounds.y.min);
-        p.x = Math.min(p.x,bounds.x.max);
-        p.x = Math.max(p.x,bounds.x.min);
 
         p.angle = p.controls.angle;
         p.light = p.controls.emotion;
