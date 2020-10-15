@@ -1,4 +1,5 @@
 
+var bgfiles = new BGfiles(); // rocks, props, etc.
 
 var faceReader = new FaceReader(); // Object for reading emotion
 //create a socket connection
@@ -25,6 +26,9 @@ function setup() {
 
     createCanvas(WIDTH, HEIGHT);
     center = { x: WIDTH/2, y: HEIGHT/2 }
+
+    // pre-load images for rocks, props, etc.
+    bgfiles.setupBG();
 
     imageMode(CENTER);
     fishie = loadImage('sprites/angler_head2.png'); //loading an image to a variable
@@ -75,6 +79,9 @@ function draw() {
     var myPreY = myPlayer.y + myPlayer.vY;
     var myInterX = lerp(myPlayer.x, myPreX, t);
     var myInterY = lerp(myPlayer.y, myPreY, t);
+
+    // drawing rocks, props, etc.
+    bgfiles.drawBG();
 
     // drawing fish body
     push();
