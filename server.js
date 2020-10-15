@@ -26,7 +26,7 @@ var bounds = {
 var gameState = {
     players: {},
     objects:{
-        rock1: {id: "rock1", x:100, y:100}
+        rock1: {id: "rock1", x:200, y:400}
     }
 }
 

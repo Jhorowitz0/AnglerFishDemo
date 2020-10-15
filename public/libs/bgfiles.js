@@ -4,7 +4,7 @@ class BGfiles{
     }
     setupBG(){
         imageMode(CENTER);
-        objects["rock1"] = loadImage('background/rock1.png');
+        this.objects["rock1"] = loadImage('background/rock1.png');
     }
 
     drawBG(id, x, y){
@@ -13,7 +13,8 @@ class BGfiles{
         // draw rocks
         imageMode(CENTER);
 
-        image(rock1, 0, 0);
+        image(this.objects["rock1"], 0, 0, 100, 80); // for some reason just using "rock1" doesn't work / display anything
+        
 
         pop();
     }

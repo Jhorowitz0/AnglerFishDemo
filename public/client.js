@@ -81,7 +81,10 @@ function draw() {
     var myInterY = lerp(myPlayer.y, myPreY, t);
 
     // drawing rocks, props, etc.
-    bgfiles.drawBG();
+    bgfiles.drawBG("rock1");
+    // ReferenceError: rock1 is not defined
+    // when testing with "rock1" (instead of rock1) the image displays fine but I'm having trouble with the coordinates. the image just stays stuck at 0,0 on the client-side
+    // not sure how to bring the server-side translate coordinates here
 
     // drawing fish body
     push();
