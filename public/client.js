@@ -19,6 +19,7 @@ var lastServerUpdate = 0;
 const SERVER_UPDATE_TIME = 1000/10;
 
 //TODO make client-side particles
+var particleSystem = new ParticleSystem(60);
 
 function preload(){
     // load images into variable fish_sprites
@@ -65,18 +66,17 @@ function draw() {
     var myInterpPos = getInterpPos(myPlayer, Date.now(), lastServerUpdate, SERVER_UPDATE_TIME); //interp client values
 
     for (var playerId in gameState.players) { //loop through players
-        
         if(playerId == socket.id) { continue; } //skip if client
-
         player = gameState.players[playerId];
-
         var interpPos = getInterpPos(player, Date.now(), lastServerUpdate, SERVER_UPDATE_TIME); //interp player values
         displace.x = interpPos.x - myInterpPos.x; //change displacement per other player
         displace.y = interpPos.y - myInterpPos.y;
 
-
         drawFish(fish_sprites, player.angle, displace, player.isFlipped);
     }
+
+    particleSystem.update(myInterpPos);
+    particleSystem.draw(myInterpPos);
 
     //send client info to server
     socket.emit('clientUpdate', {

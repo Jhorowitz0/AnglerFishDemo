@@ -1,8 +1,8 @@
 
-//This is a file for any helper functions or objects related to calculations and the drawing of the fish in our ga
+//This is a file for any helper functions or objects related to calculations and the drawing of the fish in our game
 
 
-//this function takes sprite(fish images), the fish angle, the offset
+//this function takes sprites, the fish angle, the offset
 //from the client, and if its flipped and draws a good lookin boi
 function drawFish(sprites, angle, offset, flip){
 
