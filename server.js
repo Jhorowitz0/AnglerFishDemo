@@ -25,9 +25,7 @@ var bounds = {
 //Entire gamestate will consist of prebuilt objects and player objects
 var gameState = {
     players: {},
-    objects:{
-        rock1: {id: "rock1", x:200, y:400}
-    }
+    objects:{}
 }
 
 //when a client connects serve the static files in the public directory ie public/index.html
@@ -41,26 +39,31 @@ io.on('connection', function (socket) {
     //this is sent to the client
     socket.emit('message', 'You are connected!');
     
+    //makes a new player on connect
     gameState.players[socket.id] = {
         x: Math.random(bounds.x.min,bounds.x.max),
         y: Math.random(bounds.y.min,bounds.y.max),
         angle: 0,
+        isFlipped: false,
         vX: 0,
         vY: 0,
         light: [250,250,250]
     }
 
-    socket.on('clientUpdate', function(controls) { //xDiff, yDiff, angle, emotion
+
+    socket.on('clientUpdate', function(controls) { //xDiff, yDiff, angle, isflipped, emotion
         gameState.players[socket.id].controls = controls;
     });
 
     socket.on('disconnect', function () {
         console.log("User disconnected");
-        //delete the player object
+        //delete the player object on disconnect
         delete gameState.players[socket.id];
     });
 });
 
+
+//on an interval, update each players position based on their controls. 
 setInterval(function() {
 
     var now = Date.now();
@@ -104,6 +107,7 @@ setInterval(function() {
 
         p.angle = p.controls.angle;
         p.light = p.controls.emotion;
+        p.isFlipped = p.controls.isFlipped;
     }
 
     io.sockets.emit('state', gameState);
