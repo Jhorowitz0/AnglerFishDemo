@@ -23,7 +23,16 @@ const SERVER_UPDATE_TIME = 1000/10;
 var particleSystem = new ParticleSystem(60);
 var lightingLayer = new LightingLayer();
 
+var worldImages = {};
+var objectNames = ["amm", "coral1", "coral2", "rock1", "rock2", "rock3", "rock4", "rock5", "rock6", "rock7", "rock8", "rock9", "rock10", "rock11", "rock12", "rock13", "starfish", "sub", "torpedo", "urchin1", "urchin2" ];
+
 function preload(){
+
+    objectNames.forEach(name =>{
+        console.log(name);
+        worldImages[name] = loadImage('background/' + name + '.png');
+    });
+    
     // load images into variable fish_sprites
     fish_sprites.body = loadImage('sprites/angler_head.png');
     fish_sprites.tail = loadImage('sprites/angler_tail.png');
@@ -70,8 +79,8 @@ function draw() {
     let displace = {x: 0, y: 0}; //no displacement cause client
     drawFish(fish_sprites, myPlayer.angle, displace, isFlipped); //draw client fishie
 
-    lightingLayer.renderLightBeam(displace,myPlayer.angle,700,500,emotion); //draws client light beam
-    lightingLayer.renderPointLight(displace,180,emotion); //draws client point light
+    lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
+    lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
 
     var myInterpPos = getInterpPos(myPlayer, Date.now(), lastServerUpdate, SERVER_UPDATE_TIME); //interp client values
 
@@ -89,9 +98,24 @@ function draw() {
         lightingLayer.renderPointLight(displace,50,player.emotion);
     }
 
+    var worldScale = 1.5;
+
+    for (var obj in gameState.objects){
+        let name = obj;
+
+        push();
+    
+        displace.x = gameState.objects[name].x - myInterpPos.x;
+        displace.y = gameState.objects[name].y - myInterpPos.y;
+        translate(displace.x, displace.y);
+
+        image(worldImages[name], 0, 0, worldImages[name].width /worldScale, worldImages[name].width /worldScale);
+        pop();  
+    }
+
     particleSystem.update(myInterpPos);
     particleSystem.draw(myInterpPos);
-    lightingLayer.render();
+    lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
     //send client info to server
     socket.emit('clientUpdate', {

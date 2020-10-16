@@ -11,13 +11,13 @@ var deltaTime = 0;
 //Vals for movement of players within our canvas
 var deadZone = 100;
 var meter = 100;
-var playerSpeed = 1;
+var playerSpeed = 2.5;
 
 //Vals for our world. Managed by our server
 const WIDTH = 1000;
 const HEIGHT = 1000;
 var bounds = {
-    x: { min: -500, max: 500},
+    x: { min: -3000, max: 3000},
     y: { min: -500, max: 500}
 }
 
@@ -25,7 +25,15 @@ var bounds = {
 //Entire gamestate will consist of prebuilt objects and player objects
 var gameState = {
     players: {},
-    objects:{}
+    objects:{
+        "amm": {x:480, y:450},
+        "coral1": {x:250, y:480},
+        "coral2": {x:120, y:480},
+        "sub": {x:1400, y:400},
+        "rock13": {x:-800, y:350},
+        "rock10": {x:-600, y:425},
+        "rock5": {x:-600, y:525},
+    }
 }
 
 //when a client connects serve the static files in the public directory ie public/index.html
