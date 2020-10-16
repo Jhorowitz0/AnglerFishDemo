@@ -41,7 +41,7 @@ function preload(){
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(1000, 900);
     center = { x: width/2, y: height/2 };
     imageMode(CENTER);
 
@@ -115,6 +115,7 @@ function draw() {
 
     particleSystem.update(myInterpPos);
     particleSystem.draw(myInterpPos);
+    lightingLayer.renderVignette(width*1.5,height*1.5);
     lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
     //send client info to server

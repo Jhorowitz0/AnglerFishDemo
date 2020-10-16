@@ -45,6 +45,12 @@ class LightingLayer{
         this.lightLayer.pop();
     }
 
+    renderVignette(width,height){
+        let lightPoint = this.lighting_sprites.point;
+        this.lightLayer.blendMode(MULTIPLY);
+        this.lightLayer.image(lightPoint,0,0,width,height);
+    }
+
     render(){
         blendMode(MULTIPLY);
         image(this.lightLayer,0,0);
