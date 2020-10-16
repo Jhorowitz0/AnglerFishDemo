@@ -37,6 +37,7 @@ class FaceReader {
     }
 
     getEmotionColor() {
-        return color(this.angry,this.happy,this.sad);
+        return [this.angry,this.happy,this.sad];
+        // return color(this.angry,this.happy,this.sad);
     }
 }

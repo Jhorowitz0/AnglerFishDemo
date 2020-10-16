@@ -47,7 +47,7 @@ io.on('connection', function (socket) {
         isFlipped: false,
         vX: 0,
         vY: 0,
-        light: [250,250,250]
+        emotion: null
     }
 
 
@@ -106,7 +106,7 @@ setInterval(function() {
         p.y += p.vY;
 
         p.angle = p.controls.angle;
-        p.light = p.controls.emotion;
+        p.emotion = p.controls.emotion;
         p.isFlipped = p.controls.isFlipped;
     }
 
