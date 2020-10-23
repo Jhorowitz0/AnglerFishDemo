@@ -31,7 +31,7 @@ var lastServerUpdate = 0;
 const SERVER_UPDATE_TIME = 1000/10;
 
 //TODO make client-side particles
-var particleSystem = new ParticleSystem(60);
+var particleSystem = new ParticleSystem(50);
 var lightingLayer = new LightingLayer();
 
 

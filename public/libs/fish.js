@@ -75,22 +75,22 @@ function drawMaleFish(sprites, angle, offset, flip, wiggleRate){
     angle *= wiggle;
 
     push();
-    translate(0,10);
+    translate(0,7);
     rotate(angle * -1/3);
     push();
-    translate(-30,2);
+    translate(-21,1);
     rotate(angle * -1/3);
-    image(sprites.tail,-20,0,25,25);//drawtail
+    image(sprites.tail,-14,0,17,17);//drawtail
     pop();
-    image(sprites.body,-30,0,30,25);//drawbody
+    image(sprites.body,-21,0,21,17);//drawbody
     pop();
-    image(sprites.male_head,0,0,50,50);
+    image(sprites.male_head,0,0,35,35);
 
     push();
-    translate(-10,10);
+    translate(-7,7);
     rotate(angle/2);
-    translate(-5,0);
-    image(sprites.fin,0,0,10,10);
+    translate(-3,0);
+    image(sprites.fin,0,0,7,7);
     pop();
     
     pop();

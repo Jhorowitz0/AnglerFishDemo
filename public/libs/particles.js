@@ -1,9 +1,9 @@
 class ParticleSystem{
     constructor(pCount){
         this.particles = [];
-        this.range = 800;
-        this.lifeSpan = 200;
-        this.size = 3;
+        this.range = 400;
+        this.lifeSpan = 50;
+        this.size = 4;
         for(let i = 0; i < pCount; i++){
             this.particles.push({
                 x:Math.random * this.range,
@@ -35,7 +35,7 @@ class ParticleSystem{
     draw(pos){
 
         noStroke();
-        fill(100,100,100);
+        fill(255);
 
         this.particles.forEach(particle =>{
             let offset = {

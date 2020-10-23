@@ -75,6 +75,11 @@ io.on('connection', function (socket) {
 
     socket.on('disconnect', function () {
         console.log("User disconnected");
+        
+        let player = gameState.players[socket.id];
+        if(player.femaleID != null){ //if the player was attached
+            gameState.players[player.femaleID].numAttached -= 1; //remove it from female
+        }
         //delete the player object on disconnect
         delete gameState.players[socket.id];
     });
