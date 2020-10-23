@@ -126,10 +126,21 @@ function draw() {
     //if the player is attached to a female, this code basically makes them that female for viewing purposes
     //except they cant control her only watch
     if(femaleID != null){ 
-        isMale = false; //to draw as female
-        myPlayer = gameState.players[femaleID]; //to get the data
-        emotion = myPlayer.emotion; //to set emotion
-        isFlipped = myPlayer.isFlipped; //to set orientation
+
+        if(gameState.players[femaleID] != null){
+            female = gameState.players[femaleID];
+            myPlayer.x = female.x;
+            myPlayer.y = female.y;
+            myPlayer = gameState.players[femaleID]; //to get the data
+            isMale = false; //to draw as female
+            emotion = myPlayer.emotion; //to set emotion
+            isFlipped = myPlayer.isFlipped; //to set orientation
+        }
+        else{
+            isMale = true;
+            femaleID = null;
+            myPlayer = gameState.players[socket.id];
+        }
     }
 
     //this wiggles the player based on mouse distance
