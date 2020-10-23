@@ -120,29 +120,33 @@ function draw() {
 
     if(gameState == null || gameState.players == null) { return; } //skip drawing if no players
 
-    isFlipped = mouseX < center.x; 
+    isFlipped = mouseX < center.x;  //flips orientation when needed
     var myPlayer = gameState.players[socket.id]; //get client info from server
-    if(femaleID != null){
-        isMale = false;
-        myPlayer = gameState.players[femaleID];
-        emotion = myPlayer.emotion;
-        isFlipped = myPlayer.isFlipped;
+
+    //if the player is attached to a female, this code basically makes them that female for viewing purposes
+    //except they cant control her only watch
+    if(femaleID != null){ 
+        isMale = false; //to draw as female
+        myPlayer = gameState.players[femaleID]; //to get the data
+        emotion = myPlayer.emotion; //to set emotion
+        isFlipped = myPlayer.isFlipped; //to set orientation
     }
 
-
-    //fixes some rotational math
+    //this wiggles the player based on mouse distance
     let velX = Math.abs(mouseX- center.x);
     let velY = Math.abs(mouseY- center.y);
     let vel = Math.sqrt(Math.pow(velX,2) + Math.pow(velY,2));
-    // let wiggleRate = myPlayer.wiggleRate + (vel/2);
-    let wiggleRate = lerp(myPlayer.wiggleRate,myPlayer.wiggleRate + (vel/2),0.5);
+    let wiggleRate = lerp(myPlayer.wiggleRate,myPlayer.wiggleRate + (vel/2),0.5); 
+
+
     let displace = {x: 0, y: 0}; //no displacement cause client
-    if(!isMale){
+
+    if(!isMale){ //if theyre not male (or spectating a female), draw female fish
         drawFemaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate, myPlayer.numAttached); //draw client fishie
         lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
         lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
     }
-    else{
+    else{ //if theyre male and not attached draw male fishie
         if(femaleID == null){
             drawMaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate);
             lightingLayer.renderPointLight(displace,200,150); //draws client point light
@@ -153,15 +157,15 @@ function draw() {
     var myInterpPos = getInterpPos(myPlayer, Date.now(), lastServerUpdate, SERVER_UPDATE_TIME); //interp client values
 
     for (var playerId in gameState.players) { //loop through players
-        if(playerId == socket.id || playerId == femaleID) { continue; } //skip if client
+        if(playerId == socket.id || playerId == femaleID) { continue; } //skip if client or spectated female
         player = gameState.players[playerId];
-        if(player.femaleID != null) {continue;}
+        if(player.femaleID != null) {continue;} //if the player is an attached male, dont draw them
         var interpPos = getInterpPos(player, Date.now(), lastServerUpdate, SERVER_UPDATE_TIME); //interp player values
         displace.x = interpPos.x - myInterpPos.x; //change displacement per other player
         displace.y = interpPos.y - myInterpPos.y;
 
 
-        if(player.isMale){
+        if(player.isMale){ //if other player is male...draw them
             drawMaleFish(fish_sprites, player.angle, displace, player.isFlipped, player.wiggleRate);
         }
         else{
@@ -172,13 +176,12 @@ function draw() {
                     socket.emit('attach',playerId);
                 }
             }
-            if(player.femaleID == null){
+            if(player.femaleID == null){ //if theyre a female and not attached to anyone..draw them
                 console.log(player.femaleID);
                 drawFemaleFish(fish_sprites, player.angle, displace, player.isFlipped, player.wiggleRate, myPlayer.numAttached);
                 lightingLayer.renderLightBeam(displace,player.angle,700,500,player.emotion);
                 lightingLayer.renderPointLight(displace,50,player.emotion);
             }
-            //draw female fish
         
         }
 
@@ -206,7 +209,7 @@ function draw() {
     lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
     //send client info to server
-    if(myPlayer.femaleID == null) {
+    if(myPlayer.femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
         socket.emit('clientUpdate', {
             isMale: isMale,
             femaleID: femaleID,
