@@ -31,7 +31,7 @@ function drawFish(sprites, angle, offset, flip){
 }
 
 //this function takes a player and some server time stuff and returns a lerped position
-function getInterpPos(player, now, lastSeverUpdate, serverUpdateTime){
+function getInterpPos(player, now, lastServerUpdate, serverUpdateTime){
     var timeSinceUpdate = (now - lastServerUpdate);
     var t = timeSinceUpdate / serverUpdateTime;
 
@@ -44,5 +44,20 @@ function getInterpPos(player, now, lastSeverUpdate, serverUpdateTime){
         x: interX,
         y: interY
     }
+}
+
+//this function is akin to the structure of getInterpPos but focuses on interpolating the color
+function getInterColor(player, now, lastServerUpdate, serverUpdateTime) {
+    if(player.emotion == null || player.emotionF == null)  return null;
+
+    var timeSinceUpdate = (now - lastServerUpdate);
+    var t = timeSinceUpdate / serverUpdateTime;
+
+    console.log(player.emotion);
+    console.log(player.emotionF);
+    var preColor = color(player.emotion[0], player.emotion[1], player.emotion[2]);
+    var afterColor = color(player.emotionF[0], player.emotionF[1], player.emotionF[2]);
+    colorMode(RGB);
+    return lerpColor(preColor, afterColor, t);
 }
 

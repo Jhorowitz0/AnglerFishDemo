@@ -55,7 +55,8 @@ io.on('connection', function (socket) {
         isFlipped: false,
         vX: 0,
         vY: 0,
-        emotion: null
+        emotion: [50,50,50],
+        emotionF: null
     }
 
 
@@ -113,8 +114,13 @@ setInterval(function() {
         p.x += p.vX;
         p.y += p.vY;
 
+        //Calculate Color shift
+        p.emotionF = p.controls.emotion;
+
         p.angle = p.controls.angle;
-        p.emotion = p.controls.emotion;
+
+        p.emotion = p.emotionF;
+        
         p.isFlipped = p.controls.isFlipped;
     }
 
@@ -122,7 +128,7 @@ setInterval(function() {
 
 }, UPDATE_TIME);
 
-
+//Calculate the rgb values indicating the change between these two colors
 
 //listen to the port 3000
 http.listen(3000, function () {

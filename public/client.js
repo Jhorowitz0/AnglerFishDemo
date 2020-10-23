@@ -13,13 +13,12 @@ var isFlipped = false;
 var fish_sprites = {body: null, tail: null};
 var lighting_sprites ={beam: null, point: null};
 
-
 //server specific vals
 var gameState = {};
 var lastServerUpdate = 0;
 const SERVER_UPDATE_TIME = 1000/10;
 
-//TODO make client-side particles
+var soundSystem = new SoundSystem();
 var particleSystem = new ParticleSystem(60);
 var lightingLayer = new LightingLayer();
 
@@ -27,6 +26,8 @@ var worldImages = {};
 var objectNames = ["amm", "coral1", "coral2", "rock1", "rock2", "rock3", "rock4", "rock5", "rock6", "rock7", "rock8", "rock9", "rock10", "rock11", "rock12", "rock13", "starfish", "sub", "torpedo", "urchin1", "urchin2" ];
 
 function preload(){
+
+    soundSystem.preload();
 
     objectNames.forEach(name =>{
         console.log(name);
@@ -51,6 +52,8 @@ function setup() {
     socket = io({
         autoConnect: false
     });
+
+    soundSystem.startBacktrack();
 
     //detects a server connection 
     socket.on('connect', onConnect);
@@ -79,6 +82,7 @@ function draw() {
     let displace = {x: 0, y: 0}; //no displacement cause client
     drawFish(fish_sprites, myPlayer.angle, displace, isFlipped); //draw client fishie
 
+    var interColor = getInterColor(myPlayer, Date.now, lastServerUpdate, SERVER_UPDATE_TIME);
     lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
     lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
 
@@ -93,7 +97,7 @@ function draw() {
 
         drawFish(fish_sprites, player.angle, displace, player.isFlipped);
 
-        
+        interColor = getInterpPos(player, Date.now, lastServerUpdate, SERVER_UPDATE_TIME);
         lightingLayer.renderLightBeam(displace,player.angle,700,500,player.emotion);
         lightingLayer.renderPointLight(displace,50,player.emotion);
     }
@@ -110,7 +114,7 @@ function draw() {
         translate(displace.x, displace.y);
 
         image(worldImages[name], 0, 0, worldImages[name].width /worldScale, worldImages[name].width /worldScale);
-        pop();  
+        pop();
     }
 
     particleSystem.update(myInterpPos);
