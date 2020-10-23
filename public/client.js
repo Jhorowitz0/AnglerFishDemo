@@ -14,7 +14,14 @@ var new_emotion = [250,250,250];
 var isFlipped = false;
 
 //images
-var fish_sprites = {head: null,body:null,fin:null, tail: null};
+var fish_sprites = {
+    female_head:null,
+    male_head:null,
+    body:null,
+    fin:null,
+    tail:null,
+    female_head_attached:[]
+};
 var lighting_sprites ={beam: null, point: null};
 
 
@@ -60,12 +67,22 @@ function preload(){
     });
     
     // load images into variable fish_sprites
-    fish_sprites.head = loadImage('./sprites/fish/fish_head.png');
+    fish_sprites.female_head = loadImage('./sprites/fish/fish_head_female.png');
+    fish_sprites.male_head = loadImage('./sprites/fish/fish_head_male.png');
     fish_sprites.body = loadImage('sprites/fish/fish_body.png');
     fish_sprites.tail = loadImage('sprites/fish/fish_tail.png');
     fish_sprites.fin = loadImage('sprites/fish/fish_fin.png');
     lighting_sprites.beam = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_beam.jpg?v=1602857969217');
     lighting_sprites.point = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_point.jpg?v=1602857533800');
+
+    fish_sprites.female_head_attached.push(loadImage('./sprites/fish/fish_head_female.png'));
+
+    for(let i = 1; i <= 5; i++){
+        fish_sprites.female_head_attached.push(
+            loadImage('./sprites/fish/fish_head_female_' + i + '.png')
+        );
+    }
+
 }
 
 function setup() {
@@ -121,7 +138,7 @@ function draw() {
     let wiggleRate = lerp(myPlayer.wiggleRate,myPlayer.wiggleRate + (vel/2),0.5);
     let displace = {x: 0, y: 0}; //no displacement cause client
     if(!isMale){
-        drawFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate); //draw client fishie
+        drawFemaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate, myPlayer.numAttached); //draw client fishie
         lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
         lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
     }
@@ -157,7 +174,7 @@ function draw() {
             }
             if(player.femaleID == null){
                 console.log(player.femaleID);
-                drawFish(fish_sprites, player.angle, displace, player.isFlipped, player.wiggleRate);
+                drawFemaleFish(fish_sprites, player.angle, displace, player.isFlipped, player.wiggleRate, myPlayer.numAttached);
                 lightingLayer.renderLightBeam(displace,player.angle,700,500,player.emotion);
                 lightingLayer.renderPointLight(displace,50,player.emotion);
             }

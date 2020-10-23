@@ -4,7 +4,7 @@
 
 //this function takes sprites, the fish angle, the offset
 //from the client, and if its flipped and draws a good lookin boi
-function drawFish(sprites, angle, offset, flip, wiggleRate){
+function drawFemaleFish(sprites, angle, offset, flip, wiggleRate, numAttached){
 
 
     push();
@@ -14,6 +14,7 @@ function drawFish(sprites, angle, offset, flip, wiggleRate){
         scale(-1, 1); 
         angle = ((angle < 0 ? -1 : 1) * Math.PI) - angle;
     }
+    if(numAttached > 5) numAttached = 5;
 
     strokeWeight(2);
     stroke(255);
@@ -35,7 +36,11 @@ function drawFish(sprites, angle, offset, flip, wiggleRate){
     pop();
     image(sprites.body,-60,0,60,50);//drawbody
     pop();
-    image(sprites.head,0,0,100,100);
+    if(numAttached>0){
+        if(numAttached > 5) numAttached = 5;
+        image(sprites.female_head_attached[numAttached],0,0,100,100);
+    }
+    else image(sprites.female_head,0,0,100,100);
 
     push();
     translate(-20,20);
@@ -79,7 +84,7 @@ function drawMaleFish(sprites, angle, offset, flip, wiggleRate){
     pop();
     image(sprites.body,-30,0,30,25);//drawbody
     pop();
-    image(sprites.head,0,0,50,50);
+    image(sprites.male_head,0,0,50,50);
 
     push();
     translate(-10,10);

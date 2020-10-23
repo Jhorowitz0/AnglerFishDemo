@@ -70,6 +70,7 @@ io.on('connection', function (socket) {
 
     socket.on('attach', id =>{
         gameState.players[id].numAttached += 1;
+        console.log('player now has ' + gameState.players[id].numAttached + ' fish attached!');
     });
 
     socket.on('disconnect', function () {
