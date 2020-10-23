@@ -49,6 +49,9 @@ io.on('connection', function (socket) {
     
     //makes a new player on connect
     gameState.players[socket.id] = {
+        isMale: false,
+        femaleID: null,
+        numAttached: 0,
         x: Math.random(bounds.x.min,bounds.x.max),
         y: Math.random(bounds.y.min,bounds.y.max),
         angle: 0,
@@ -63,6 +66,10 @@ io.on('connection', function (socket) {
 
     socket.on('clientUpdate', function(controls) { //xDiff, yDiff, angle, isflipped, emotion
         gameState.players[socket.id].controls = controls;
+    });
+
+    socket.on('attach', id =>{
+        gameState.players[id].numAttached += 1;
     });
 
     socket.on('disconnect', function () {
@@ -117,6 +124,10 @@ setInterval(function() {
 
         //Calculate Color shift
         p.emotionF = p.controls.emotion;
+
+        p.isMale = p.controls.isMale;
+
+        p.femaleID = p.controls.femaleID;
 
         p.angle = p.controls.angle;
 

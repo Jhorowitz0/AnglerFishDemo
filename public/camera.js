@@ -13,7 +13,8 @@ function startVideo(){
         video.srcObject = stream; //If it succeeds it streams it the html element
     })
     .catch(function(err) {
-        console.log(err); //If it fails throw an err
+        faceReader.disableLoading();
+        isMale = true;
     });
 }
 

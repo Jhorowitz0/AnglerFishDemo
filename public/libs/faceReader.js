@@ -61,6 +61,10 @@ class FaceReader {
         let green = this.happy + this.surprised;
         return [red, green, blue];
     }
+
+    disableLoading(){
+        show('loading', false); //disable loading screen 
+    }
 }
 
 function show(id, value) {

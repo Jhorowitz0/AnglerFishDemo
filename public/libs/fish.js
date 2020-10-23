@@ -44,27 +44,50 @@ function drawFish(sprites, angle, offset, flip, wiggleRate){
     image(sprites.fin,0,0,20,20);
     pop();
 
+    pop();
 
-    // translate(0,20);
-    // rotate(angle * -1/3);
-    // image(sprites.body,-60,0,60,50);
+}
 
-    // translate(-60,5);
-    // rotate(angle * -1/3);
-    // image(sprites.tail,-40,0,50,50);
+function drawMaleFish(sprites, angle, offset, flip, wiggleRate){
 
 
-    //draw body
-    // rotate(angle * 1/2);
-    // image(sprites.body, 0, 0, 200, 180);
+    push();
+    translate(offset.x,offset.y);
 
-    // // draw tail
-    // if(sprites.tail != null){
-    //     translate(-100,55);
-    //     rotate(angle * 2/3);
-    //     image(sprites.tail, 0, 0, 200, 180);
-    // }
+    if(flip){
+        scale(-1, 1); 
+        angle = ((angle < 0 ? -1 : 1) * Math.PI) - angle;
+    }
 
+    strokeWeight(2);
+    stroke(255);
+    noFill();
+
+
+    rotate(angle);
+
+    let wiggle = sin(wiggleRate)/2;
+    angle *= wiggle;
+
+    push();
+    translate(0,10);
+    rotate(angle * -1/3);
+    push();
+    translate(-30,2);
+    rotate(angle * -1/3);
+    image(sprites.tail,-20,0,25,25);//drawtail
+    pop();
+    image(sprites.body,-30,0,30,25);//drawbody
+    pop();
+    image(sprites.head,0,0,50,50);
+
+    push();
+    translate(-10,10);
+    rotate(angle/2);
+    translate(-5,0);
+    image(sprites.fin,0,0,10,10);
+    pop();
+    
     pop();
 
 }
