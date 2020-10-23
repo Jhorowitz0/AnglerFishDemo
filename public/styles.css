@@ -1,16 +1,39 @@
-body{
-    background-color: black;
-    margin: 0;
-    display: flex;
+body {
+  background-color: black;
+  margin: 0;
+  display: flex;
 
-    /* This centers our sketch horizontally. */
-    justify-content: center;
+  /* This centers our sketch horizontally. */
+  justify-content: center;
 
-  /* This centers our sketch vertically.
-  align-items: center; */
+/* This centers our sketch vertically.
+align-items: center; */
 }
 
 canvas{
-    padding:5px;
-    margin: auto;
+  padding:5px;
+  margin: auto;
+}
+
+#overlay {
+  position: absolute;
+}
+
+#video {
+  position: absolute;
+  z-index: -1;
+}
+
+#loading {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(192, 192, 192, 0.5);
+    background-image: url("http://i.stack.imgur.com/MnyxU.gif");
+    background-repeat: no-repeat;
+    background-position: center;
 }

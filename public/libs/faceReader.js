@@ -23,16 +23,23 @@ class FaceReader {
     async readFace() {
         var detections = await faceapi
             .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()) //get all faces in view
+            .withFaceLandmarks()                                          //landmarks used for visual feedback
             .withFaceExpressions();                                       //get scores for every expression
-            //possible expressions: neutral, happy, sad, angry, fearful
-
-        //scale landmarks to match screen size 
-        //TODO: make an accurate mapping from webcam space to screenspace
-        detections = faceapi.resizeResults(detections, {width: windowWidth, height: windowHeight});
 
         //set position and color if at least 1 face is detected
         if(detections != null && detections[0] != null) {
+            show('loading', false); //disable loading screen 
             this.updateEmotions(detections[0].expressions);
+          
+            //setup seperate canvas to display face input feedback
+            const canvas = document.getElementById('overlay');
+            canvas.getContext("2d").clearRect(0,0,canvas.width, canvas.height);
+            const displaySize = { width: canvas.width, height: canvas.height };
+          
+            //use faceapi to draw visual feedback 
+            const resizedResults = faceapi.resizeResults(detections, displaySize);  
+            faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
+            faceapi.draw.drawFaceExpressions(canvas, resizedResults, 0.05);
         }
     }
 
@@ -40,4 +47,8 @@ class FaceReader {
         return [this.angry,this.happy,this.sad];
         // return color(this.angry,this.happy,this.sad);
     }
+}
+
+function show(id, value) {
+    document.getElementById(id).style.display = value ? 'block' : 'none';
 }

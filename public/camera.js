@@ -24,3 +24,4 @@ Promise.all([
     faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
     faceapi.nets.faceExpressionNet.loadFromUri("/models")
 ]).then(startVideo);
+
