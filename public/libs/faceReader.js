@@ -8,9 +8,15 @@
 //-------------------CLASS FOR OBJECT TO GET EMOTIONS-------------
 class FaceReader {
     constructor() {
+        //primary emotions
         this.angry = 128;
         this.sad = 128;
         this.happy = 128;  
+      
+        //secondary emotions
+        this.surprised = 0;
+        this.disgusted = 0;
+        this.fearful = 0;
     }
 
     //takes an expression and updates the emotion variables
@@ -18,6 +24,12 @@ class FaceReader {
         this.angry = expressions.angry * 255 + 50;
         this.sad = expressions.sad * 255 + 50;
         this.happy = expressions.happy * 255 + 50;
+      
+        //secondary emotions do not have a minimum weight
+        this.surprised = expressions.surprised * 255;
+        this.disgusted = expressions.disgusted * 255;
+        this.fearful = expressions.fearful * 255;
+        
     }
 
     async readFace() {
@@ -44,8 +56,10 @@ class FaceReader {
     }
 
     getEmotionColor() {
-        return [this.angry,this.happy,this.sad];
-        // return color(this.angry,this.happy,this.sad);
+        let red = this.angry + this.disgusted;
+        let blue = this.sad + this.fearful;
+        let green = this.happy + this.surprised;
+        return [red, green, blue];
     }
 }
 

@@ -7,27 +7,28 @@ var center;
 
 //player specific vals
 var emotion = [250,250,250];
+var new_emotion = [250,250,250];
 var isFlipped = false;
 
 //images
 var fish_sprites = {body: null, tail: null};
 var lighting_sprites ={beam: null, point: null};
 
+
 //server specific vals
 var gameState = {};
 var lastServerUpdate = 0;
 const SERVER_UPDATE_TIME = 1000/10;
 
-var soundSystem = new SoundSystem();
+//TODO make client-side particles
 var particleSystem = new ParticleSystem(60);
 var lightingLayer = new LightingLayer();
+
 
 var worldImages = {};
 var objectNames = ["amm", "coral1", "coral2", "rock1", "rock2", "rock3", "rock4", "rock5", "rock6", "rock7", "rock8", "rock9", "rock10", "rock11", "rock12", "rock13", "starfish", "sub", "torpedo", "urchin1", "urchin2" ];
 
 function preload(){
-
-    soundSystem.preload();
 
     objectNames.forEach(name =>{
         console.log(name);
@@ -37,12 +38,12 @@ function preload(){
     // load images into variable fish_sprites
     fish_sprites.body = loadImage('sprites/angler_head.png');
     fish_sprites.tail = loadImage('sprites/angler_tail.png');
-    lighting_sprites.beam = loadImage('sprites/light_beam.jpg');
-    lighting_sprites.point = loadImage('sprites/light_point.jpg');
+    lighting_sprites.beam = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_beam.jpg?v=1602857969217');
+    lighting_sprites.point = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_point.jpg?v=1602857533800');
 }
 
 function setup() {
-    createCanvas(1000, 900);
+    createCanvas(windowWidth, windowHeight);
     center = { x: width/2, y: height/2 };
     imageMode(CENTER);
 
@@ -52,8 +53,6 @@ function setup() {
     socket = io({
         autoConnect: false
     });
-
-    soundSystem.startBacktrack();
 
     //detects a server connection 
     socket.on('connect', onConnect);
@@ -68,6 +67,8 @@ function setup() {
 
 function draw() {
     background(10); //paint it black
+    emotion = lerp_triple(emotion, new_emotion, 0.1);
+
     lightingLayer.startRender();
 
     push();
@@ -82,7 +83,6 @@ function draw() {
     let displace = {x: 0, y: 0}; //no displacement cause client
     drawFish(fish_sprites, myPlayer.angle, displace, isFlipped); //draw client fishie
 
-    var interColor = getInterColor(myPlayer, Date.now, lastServerUpdate, SERVER_UPDATE_TIME);
     lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
     lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
 
@@ -97,7 +97,7 @@ function draw() {
 
         drawFish(fish_sprites, player.angle, displace, player.isFlipped);
 
-        interColor = getInterpPos(player, Date.now, lastServerUpdate, SERVER_UPDATE_TIME);
+        
         lightingLayer.renderLightBeam(displace,player.angle,700,500,player.emotion);
         lightingLayer.renderPointLight(displace,50,player.emotion);
     }
@@ -114,12 +114,11 @@ function draw() {
         translate(displace.x, displace.y);
 
         image(worldImages[name], 0, 0, worldImages[name].width /worldScale, worldImages[name].width /worldScale);
-        pop();
+        pop();  
     }
 
     particleSystem.update(myInterpPos);
     particleSystem.draw(myInterpPos);
-    lightingLayer.renderVignette(width*1.5,height*1.5);
     lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
     //send client info to server
@@ -138,7 +137,8 @@ function draw() {
 // get players face on an interval and update emotion
 setInterval(function() {
     faceReader.readFace(); //gets emotion from face on campera if there is one
-    emotion = (faceReader.getEmotionColor()); //updates player emotion color
+    new_emotion = (faceReader.getEmotionColor()); //updates player emotion color
+    
 }, 1000);
 
 
@@ -163,4 +163,12 @@ function onStateUpdate(state) {
         lastServerUpdate = Date.now();
         gameState = state;
     }
+}
+
+function lerp_triple(triple1, triple2, lerp_value) {
+  var triple3 = [0,0,0];
+  triple3[0] = lerp(triple1[0],triple2[0], lerp_value);
+  triple3[1] = lerp(triple1[1],triple2[1], lerp_value);
+  triple3[2] = lerp(triple1[2],triple2[2], lerp_value);
+  return triple3;
 }
