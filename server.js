@@ -53,6 +53,7 @@ io.on('connection', function (socket) {
         y: Math.random(bounds.y.min,bounds.y.max),
         angle: 0,
         isFlipped: false,
+        wiggleRate: 0,
         vX: 0,
         vY: 0,
         emotion: [50,50,50],
@@ -122,6 +123,8 @@ setInterval(function() {
         p.emotion = p.emotionF;
         
         p.isFlipped = p.controls.isFlipped;
+
+        p.wiggleRate = p.controls.wiggleRate;
     }
 
     io.sockets.emit('state', gameState);

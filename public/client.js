@@ -11,7 +11,7 @@ var new_emotion = [250,250,250];
 var isFlipped = false;
 
 //images
-var fish_sprites = {body: null, tail: null};
+var fish_sprites = {head: null,body:null,fin:null, tail: null};
 var lighting_sprites ={beam: null, point: null};
 
 
@@ -26,18 +26,41 @@ var lightingLayer = new LightingLayer();
 
 
 var worldImages = {};
-var objectNames = ["amm", "coral1", "coral2", "rock1", "rock2", "rock3", "rock4", "rock5", "rock6", "rock7", "rock8", "rock9", "rock10", "rock11", "rock12", "rock13", "starfish", "sub", "torpedo", "urchin1", "urchin2" ];
+var objectNames = [
+    "amm",
+    "coral1",
+    "coral2",
+    "rock1",
+    "rock2",
+    "rock3",
+    "rock4",
+    "rock5",
+    "rock6",
+    "rock7",
+    "rock8",
+    "rock9",
+    "rock10",
+    "rock11",
+    "rock12",
+    "rock13",
+    "starfish",
+    "sub",
+    "torpedo",
+    "urchin1",
+    "urchin2"
+];
 
 function preload(){
 
     objectNames.forEach(name =>{
-        console.log(name);
         worldImages[name] = loadImage('background/' + name + '.png');
     });
     
     // load images into variable fish_sprites
-    fish_sprites.body = loadImage('sprites/angler_head.png');
-    fish_sprites.tail = loadImage('sprites/angler_tail.png');
+    fish_sprites.head = loadImage('./sprites/fish/fish_head.png');
+    fish_sprites.body = loadImage('sprites/fish/fish_body.png');
+    fish_sprites.tail = loadImage('sprites/fish/fish_tail.png');
+    fish_sprites.fin = loadImage('sprites/fish/fish_fin.png');
     lighting_sprites.beam = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_beam.jpg?v=1602857969217');
     lighting_sprites.point = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_point.jpg?v=1602857533800');
 }
@@ -46,6 +69,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     center = { x: width/2, y: height/2 };
     imageMode(CENTER);
+    rectMode(CENTER);
 
     lightingLayer.setup(width,height,lighting_sprites);
 
@@ -78,10 +102,16 @@ function draw() {
 
     var myPlayer = gameState.players[socket.id]; //get client info from server
 
+
     //fixes some rotational math
     isFlipped = mouseX < center.x; 
+    let velX = Math.abs(mouseX- center.x);
+    let velY = Math.abs(mouseY- center.y);
+    let vel = Math.sqrt(Math.pow(velX,2) + Math.pow(velY,2));
+    // let wiggleRate = myPlayer.wiggleRate + (vel/2);
+    let wiggleRate = lerp(myPlayer.wiggleRate,myPlayer.wiggleRate + (vel/2),0.5);
     let displace = {x: 0, y: 0}; //no displacement cause client
-    drawFish(fish_sprites, myPlayer.angle, displace, isFlipped); //draw client fishie
+    drawFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate); //draw client fishie
 
     lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
     lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
@@ -95,7 +125,7 @@ function draw() {
         displace.x = interpPos.x - myInterpPos.x; //change displacement per other player
         displace.y = interpPos.y - myInterpPos.y;
 
-        drawFish(fish_sprites, player.angle, displace, player.isFlipped);
+        drawFish(fish_sprites, player.angle, displace, player.isFlipped, player.wiggleRate);
 
         
         lightingLayer.renderLightBeam(displace,player.angle,700,500,player.emotion);
@@ -128,7 +158,8 @@ function draw() {
         angle: Math.atan2(mouseY-center.y
                         , mouseX-center.x),
         isFlipped: isFlipped,
-        emotion: emotion
+        emotion: emotion,
+        wiggleRate: wiggleRate
     });
 
     pop(); //pop the translate to center
@@ -139,7 +170,7 @@ setInterval(function() {
     faceReader.readFace(); //gets emotion from face on campera if there is one
     new_emotion = (faceReader.getEmotionColor()); //updates player emotion color
     
-}, 1000);
+}, 200);
 
 
 

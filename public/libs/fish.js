@@ -4,7 +4,8 @@
 
 //this function takes sprites, the fish angle, the offset
 //from the client, and if its flipped and draws a good lookin boi
-function drawFish(sprites, angle, offset, flip){
+function drawFish(sprites, angle, offset, flip, wiggleRate){
+
 
     push();
     translate(offset.x,offset.y);
@@ -14,17 +15,55 @@ function drawFish(sprites, angle, offset, flip){
         angle = ((angle < 0 ? -1 : 1) * Math.PI) - angle;
     }
 
+    strokeWeight(2);
+    stroke(255);
+    noFill();
+
+
+    rotate(angle);
+
+    let wiggle = sin(wiggleRate)/2;
+    angle *= wiggle;
+
+    push();
+    translate(0,20);
+    rotate(angle * -1/3);
+    push();
+    translate(-60,5);
+    rotate(angle * -1/3);
+    image(sprites.tail,-40,0,50,50);//drawtail
+    pop();
+    image(sprites.body,-60,0,60,50);//drawbody
+    pop();
+    image(sprites.head,0,0,100,100);
+
+    push();
+    translate(-20,20);
+    rotate(angle/2);
+    translate(-10,0);
+    image(sprites.fin,0,0,20,20);
+    pop();
+
+
+    // translate(0,20);
+    // rotate(angle * -1/3);
+    // image(sprites.body,-60,0,60,50);
+
+    // translate(-60,5);
+    // rotate(angle * -1/3);
+    // image(sprites.tail,-40,0,50,50);
+
 
     //draw body
-    rotate(angle * 1/2);
-    image(sprites.body, 0, 0, 200, 180);
+    // rotate(angle * 1/2);
+    // image(sprites.body, 0, 0, 200, 180);
 
-    // draw tail
-    if(sprites.tail != null){
-        translate(-100,55);
-        rotate(angle * 2/3);
-        image(sprites.tail, 0, 0, 200, 180);
-    }
+    // // draw tail
+    // if(sprites.tail != null){
+    //     translate(-100,55);
+    //     rotate(angle * 2/3);
+    //     image(sprites.tail, 0, 0, 200, 180);
+    // }
 
     pop();
 
