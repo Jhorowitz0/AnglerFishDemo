@@ -1,4 +1,5 @@
 var faceReader = new FaceReader(); // Object for reading emotion
+var soundSystem = new SoundSystem();
 //create a socket connection
 var socket;
 
@@ -65,6 +66,8 @@ function preload(){
     objectNames.forEach(name =>{
         worldImages[name] = loadImage('background/' + name + '.png');
     });
+
+    soundSystem.preload();
     
     // load images into variable fish_sprites
     fish_sprites.female_head = loadImage('./sprites/fish/fish_head_female.png');
@@ -90,6 +93,8 @@ function setup() {
     center = { x: width/2, y: height/2 };
     imageMode(CENTER);
     rectMode(CENTER);
+
+    soundSystem.startBacktrack();
 
     lightingLayer.setup(width,height,lighting_sprites);
 
