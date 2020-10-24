@@ -25,15 +25,15 @@ var bounds = {
 //Entire gamestate will consist of prebuilt objects and player objects
 var gameState = {
     players: {},
-    objects:{
-        "amm": {x:480, y:450},
-        "coral1": {x:250, y:480},
-        "coral2": {x:120, y:480},
-        "sub": {x:1400, y:400},
-        "rock13": {x:-800, y:350},
-        "rock10": {x:-600, y:425},
-        "rock5": {x:-600, y:525},
-    }
+    objects:[
+        {img:"amm", x:480, y:450, sX:1, sY:1},
+        {img:"coral1", x:250, y:480, sX:1, sY:1},
+        {img:"coral2", x:120, y:480, sX:1, sY:1},
+        {img:"rock13", x:-800, y:350, sX:1, sY:1},
+        {img:"rock10", x:-300, y:545, sX:1.3, sY:1},
+        {img:"rock5", x:-600, y:525, sX:2, sY:2},
+        {img:"sub", x:1400, y:400, sX:1, sY:1},
+    ]
 }
 
 //when a client connects serve the static files in the public directory ie public/index.html

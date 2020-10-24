@@ -90,7 +90,7 @@ function preload(){
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(800, 800);
     center = { x: width/2, y: height/2 };
     imageMode(CENTER);
     rectMode(CENTER);
@@ -208,24 +208,26 @@ function draw() {
     
     }
 
-    var worldScale = 1.5;
+    var worldScale = 2/3;
 
-    for (var obj in gameState.objects){
-        let name = obj;
+    for (var name in gameState.objects){
+        let obj = gameState.objects[name];
+        let objImg = worldImages[obj.img];
+        if(objImg == null) console.log('shit');
 
         push();
     
-        displace.x = gameState.objects[name].x - myInterpPos.x;
-        displace.y = gameState.objects[name].y - myInterpPos.y;
+        displace.x = obj.x - myInterpPos.x;
+        displace.y = obj.y - myInterpPos.y;
         translate(displace.x, displace.y);
 
-        image(worldImages[name], 0, 0, worldImages[name].width /worldScale, worldImages[name].width /worldScale);
+        image(objImg, 0, 0, (objImg.width*obj.sX)*worldScale, (objImg.height*obj.sY)*worldScale);
         pop();  
     }
 
     particleSystem.update(myInterpPos);
     particleSystem.draw(myInterpPos);
-    lightingLayer.render(); // DON'T DRAW PAST THIS POINT
+    //lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
     //send client info to server
     if(myPlayer.femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
