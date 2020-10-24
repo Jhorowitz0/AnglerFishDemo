@@ -73,6 +73,10 @@ io.on('connection', function (socket) {
         console.log('player now has ' + gameState.players[id].numAttached + ' fish attached!');
     });
 
+    socket.on('clientCall', function(callName) { //callname : string
+        socket.broadcast.emit('call', {name: callName, id: socket.id});
+    });
+
     socket.on('disconnect', function () {
         console.log("User disconnected");
         

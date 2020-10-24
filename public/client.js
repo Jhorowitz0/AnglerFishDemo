@@ -108,6 +108,8 @@ function setup() {
     socket.on('connect', onConnect);
     //handles the messages from the server, the parameter is a string
     socket.on('message', onMessage);
+    //handles the messages broadcasted from other clients who are making a call
+    socket.on('call', onCall);
     //copy game state from server
     socket.on('state', onStateUpdate);
     //starts socket
@@ -264,6 +266,32 @@ function onMessage(msg) {
     if (socket.id) {
         console.log("Message from server: " + msg);
     }
+}
+
+function onCall(input) {
+    var MyPlayer = gameState[socket.id];
+    var otherPlayer = gameState[input.id];
+    //CALCULATE PAN VALUE
+    var pan;
+    let xDifference = otherPlayer.x - MyPlayer.x;
+    if(abs(xDifference) < 100)
+        pan = 0;
+    else {
+        if(xDifference < 0)
+            xDifference += 100;
+        else /* xDifference > 0 */
+            xDifference -= 100;
+        pan = constrain(xDifference/150, -1, 1);
+    }
+
+    //CALCULATE VOL VALUE
+    var vol;
+    let distance = dist(MyPlayer.x, MyPlayer.y, otherPlayer.x, otherPlayer.y);
+    distance = constrain(distance - 150, 0, distance);
+    vol = constrain(distance/250, 0, 1);
+    vol = 1 - vol;
+
+    soundSystem.playCall(input.name, vol, pan);
 }
 
 function onStateUpdate(state) {
