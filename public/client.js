@@ -307,7 +307,7 @@ function mousePressed() {
         canCall = false;
 
         var callName;
-        if(isMale) callName = 'maleCall';
+        if(isMale || femaleID != null) callName = 'maleCall';
         else       callName = faceReader.returnDominant();
         soundSystem.playCall(callName, 1, 0);
 
