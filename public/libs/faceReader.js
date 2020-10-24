@@ -62,6 +62,17 @@ class FaceReader {
         return [red, green, blue];
     }
 
+    returnDominant() {
+        if(this.angry > this.sad + 32 && this.angry > this.happy + 32)
+            return "femaleAngry";
+        else if(this.happy > this.angry + 32 && this.happy > this.sad + 32)
+            return "femaleHappy";
+        else if(this.sad > this.angry + 32 && this.sad > this.happy + 32)
+            return "femaleSad";
+        else
+            return "femaleNeutral";
+    }
+
     disableLoading(){
         show('loading', false); //disable loading screen 
     }

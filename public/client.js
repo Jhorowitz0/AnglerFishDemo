@@ -13,6 +13,7 @@ var numAttached = 0;
 var emotion = [250,250,250];
 var new_emotion = [250,250,250];
 var isFlipped = false;
+var canCall = true;
 
 //images
 var fish_sprites = {
@@ -270,6 +271,21 @@ function onStateUpdate(state) {
         //copy the state locally and the time of the update
         lastServerUpdate = Date.now();
         gameState = state;
+    }
+}
+
+function mousePressed() {
+    if(mouseButton == LEFT && canCall) {
+        canCall = false;
+
+        var callName;
+        if(isMale) callName = 'maleCall';
+        else       callName = faceReader.returnDominant();
+        soundSystem.playCall(callName, 1, 0);
+
+        socket.emit('clientCall', callName);
+
+        setTimeout( () => { canCall = true;}, 2000);
     }
 }
 
