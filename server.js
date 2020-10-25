@@ -27,12 +27,12 @@ var gameState = {
     players: {},
     objects:[
         {img:"amm", x:480, y:450, w:450, h:600},
-        {img:"coral1", x:250, y:480, w:1, h:1},
-        {img:"coral2", x:120, y:480, w:1, h:1},
-        {img:"rock13", x:-800, y:350, w:1, h:1},
-        {img:"rock10", x:-300, y:545, w:1, h:1},
-        {img:"rock5", x:-600, y:525, w:1, h:1},
-        {img:"sub", x:1400, y:400, w:1, h:1},
+        {img:"coral1", x:250, y:480, w:330, h:520},
+        {img:"coral2", x:120, y:480, w:330, h:560},
+        {img:"rock13", x:-800, y:350, w:750, h:750},
+        {img:"rock10", x:-300, y:545, w:500, h:200},
+        {img:"rock5", x:-600, y:525, w:200, h:200},
+        {img:"sub", x:1400, y:400, w:900, h:800},
     ]
 }
 

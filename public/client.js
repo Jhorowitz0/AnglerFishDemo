@@ -243,7 +243,7 @@ function draw() {
         displace.y = obj.y - myInterpPos.y;
         lightingLayer.renderImage(objImg,displace,obj.w*worldScale,obj.h*worldScale,obj.color);
     });
-    lightingLayer.render(); // DON'T DRAW PAST THIS POINT
+    //lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
     //send client info to server
     if(myPlayer.femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
@@ -375,7 +375,6 @@ function updateGlow(x,y,r,glowColor){
     glowObjects.forEach(obj=>{
         let distance = getDistance(x,y,obj.x,obj.y);
         if(distance<r){
-            console.log('glow');
             obj.color = lerpColor(obj.color,glowColor,0.1);
         }
     });
