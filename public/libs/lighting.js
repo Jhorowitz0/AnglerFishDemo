@@ -38,9 +38,10 @@ class LightingLayer{
         this.lightLayer.pop();
     }
 
-    renderImage(lightImage,pos,width,height){
+    renderImage(lightImage,pos,width,height,tint=255){
         this.lightLayer.push();
         this.lightLayer.translate(pos.x,pos.y);
+        this.lightLayer.tint(tint);
         this.lightLayer.image(lightImage,0,0,width,height);
         this.lightLayer.pop();
     }

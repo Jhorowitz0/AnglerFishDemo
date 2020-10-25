@@ -59,7 +59,8 @@ class FaceReader {
         let red = this.angry + this.disgusted;
         let blue = this.sad + this.fearful;
         let green = this.happy + this.surprised;
-        return [red, green, blue];
+        return([red,green,blue]);
+        // return color(red,green,blue);
     }
 
     returnDominant() {
