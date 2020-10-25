@@ -52,6 +52,7 @@ class LightingLayer{
         this.lightLayer.image(lightPoint,0,0,width,height);
     }
 
+
     render(){
         blendMode(MULTIPLY);
         image(this.lightLayer,0,0);

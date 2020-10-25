@@ -14,6 +14,7 @@ var emotion = [255,255,255];
 var new_emotion = [255,255,255];
 var isFlipped = false;
 var canCall = true;
+let angle = 0;
 
 //images
 var fish_sprites = {
@@ -92,7 +93,7 @@ function preload(){
 }
 
 function setup() {
-    createCanvas(800, 800);
+    createCanvas(1400, 800);
     center = { x: width/2, y: height/2 };
     imageMode(CENTER);
     rectMode(CENTER);
@@ -137,7 +138,7 @@ function draw() {
 
     if(gameState == null || gameState.players == null) { return; } //skip drawing if no players
 
-
+    angle = Math.atan2(mouseY-height/2, mouseX-width/2);
     isFlipped = mouseX < center.x;  //flips orientation when needed
     var myPlayer = gameState.players[socket.id]; //get client info from server
     //if the player is attached to a female, this code basically makes them that female for viewing purposes
@@ -174,10 +175,11 @@ function draw() {
         lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
         lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
         updateGlow(myPlayer.x,myPlayer.y,300,arrayToColor(emotion));
+        updateGlowCone(myPlayer.x,myPlayer.y,myPlayer.angle,arrayToColor(emotion));
     }
     else{ //if theyre male and not attached draw male fishie
         if(femaleID == null){
-            emotion = color(150);
+            emotion = [150,150,150];
             drawMaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate);
             lightingLayer.renderPointLight(displace,200,emotion); //draws client point light
         }
@@ -212,12 +214,9 @@ function draw() {
                 lightingLayer.renderLightBeam(displace,player.angle,700,500,player.emotion);
                 lightingLayer.renderPointLight(displace,50,player.emotion);
                 updateGlow(player.x,player.y,200,arrayToColor(player.emotion));
-            }
-        
+                updateGlowCone(player.x,player.y,player.angle,arrayToColor(player.emotion));
+            }    
         }
-
-        
-    
     }
 
     //draws world objects
@@ -267,7 +266,7 @@ function draw() {
 if(!isMale)setInterval(function() {
     faceReader.readFace(); //gets emotion from face on campera if there is one
     new_emotion = (faceReader.getEmotionColor()); //updates player emotion color
-}, 200);
+}, 500);
 
 
 
@@ -357,6 +356,13 @@ function lerp_triple(triple1, triple2, lerp_value) {
   return triple3;
 }
 
+function lerpColor_add(color1,color2,lerp_value){
+    let r = red(color1) + (red(color2)*lerp_value);
+    let g = green(color1) + (green(color2)*lerp_value);
+    let b = blue(color1) + (blue(color2)*lerp_value);
+    return color(r,g,b);
+}
+
 function arrayToColor(array){
     let r = array[0];
     let g = array[1];
@@ -374,8 +380,24 @@ function getDistance(x1,y1,x2,y2){
 function updateGlow(x,y,r,glowColor){
     glowObjects.forEach(obj=>{
         let distance = getDistance(x,y,obj.x,obj.y);
-        if(distance<r){
+        if(distance<r/2){
             obj.color = lerpColor(obj.color,glowColor,0.1);
         }
     });
+}
+
+function updateGlowCone(x,y,angle,glowColor){
+    let range = 1000;
+    let freq = 4;
+    for(let i = 0; i < freq; i++){
+        let xpos =  x + Math.cos(angle) * range/4 * i;
+        let ypos =  y + Math.sin(angle) * range/4 * i;
+        let radius = Math.tan(1) * 100 * i;
+        updateGlow(xpos,ypos,radius,glowColor);
+        stroke(glowColor);
+        strokeWeight(3);
+        noFill();
+        ellipse(xpos-x,ypos-y,radius,radius);
+        noStroke();
+    }
 }
