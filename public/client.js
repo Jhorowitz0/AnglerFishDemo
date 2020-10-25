@@ -394,10 +394,5 @@ function updateGlowCone(x,y,angle,glowColor){
         let ypos =  y + Math.sin(angle) * range/4 * i;
         let radius = Math.tan(1) * 100 * i;
         updateGlow(xpos,ypos,radius,glowColor);
-        stroke(glowColor);
-        strokeWeight(3);
-        noFill();
-        ellipse(xpos-x,ypos-y,radius,radius);
-        noStroke();
     }
 }
