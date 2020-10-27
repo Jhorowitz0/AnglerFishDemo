@@ -247,9 +247,9 @@ function draw() {
 
     lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
-    fill(255);
-    textSize(32);
-    text(Math.floor(frameRate()), -500, -300);
+    // fill(255);
+    // textSize(32);
+    // text(Math.floor(frameRate()), -500, -300); //fps counter
     
 
     //send client info to server
