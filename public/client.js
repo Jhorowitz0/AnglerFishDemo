@@ -1,7 +1,7 @@
 var faceReader = new FaceReader(); // Object for reading emotion
 var soundSystem = new SoundSystem();
 //create a socket connection
-var socket;
+var socket = null;
 
 //SCREEN VALS
 var center;
@@ -29,14 +29,14 @@ var lighting_sprites ={beam: null, point: null};
 
 
 //server specific vals
-var gameState = {};
+var gameState = {objects: []};
 var lastServerUpdate = 0;
 const SERVER_UPDATE_TIME = 1000/10;
 
 //TODO make client-side particles
 var particleSystem = new ParticleSystem(50);
+var bubbles = new BubbleSystem();
 var lightingLayer = new LightingLayer();
-var glowObjects = [];
 
 var worldScale = 2/3;
 var worldImages = {};
@@ -61,7 +61,8 @@ var objectNames = [
     "sub",
     "torpedo",
     "urchin1",
-    "urchin2"
+    "urchin2",
+    "vent","vent_glow"
 ];
 var displace = {x: 0, y: 0};
 
@@ -123,15 +124,9 @@ function draw() {
     background(10); //paint it black
     
 
-    emotion = lerp_triple(emotion, new_emotion, 0.1);
+    emotion = lerp_triple(emotion, new_emotion, 0.1); //eases to next emotion
     
-    // emotion = lerpColor(emotion,new_emotion, 0.1);
-
     lightingLayer.startRender();
-    glowObjects.forEach(obj=>{
-        if(obj.color == null) obj.color=color(0,0,0);
-        obj.color = lerpColor(obj.color,color(0,0,0),0.03);
-    });
 
     push();
     translate(center.x,center.y); // <---- IMPORTANT, for ease, everything in draw will draw with (0,0) as the center of the page. 
@@ -144,7 +139,6 @@ function draw() {
     //if the player is attached to a female, this code basically makes them that female for viewing purposes
     //except they cant control her only watch
     if(femaleID != null){ 
-
         if(gameState.players[femaleID] != null){
             female = gameState.players[femaleID];
             myPlayer.x = female.x;
@@ -174,14 +168,17 @@ function draw() {
         drawFemaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate, myPlayer.numAttached); //draw client fishie
         lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
         lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
-        updateGlow(myPlayer.x,myPlayer.y,300,arrayToColor(emotion));
-        updateGlowCone(myPlayer.x,myPlayer.y,myPlayer.angle,arrayToColor(emotion));
+        if(femaleID == null){ //making sure its not a male spectating a female
+            updateGlow(myPlayer.x,myPlayer.y,300,arrayToColor(emotion)); //updates objects in vision
+            updateGlowCone(myPlayer.x,myPlayer.y,myPlayer.angle,arrayToColor(emotion)); 
+        }
     }
     else{ //if theyre male and not attached draw male fishie
         if(femaleID == null){
             emotion = [150,150,150];
             drawMaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate);
             lightingLayer.renderPointLight(displace,200,emotion); //draws client point light
+            updateGlow(myPlayer.x,myPlayer.y,200,arrayToColor(emotion));
         }
     }
 
@@ -209,40 +206,51 @@ function draw() {
                 }
             }
             if(player.femaleID == null){ //if theyre a female and not attached to anyone..draw them
-                console.log(player.femaleID);
                 drawFemaleFish(fish_sprites, player.angle, displace, player.isFlipped, player.wiggleRate, myPlayer.numAttached);
                 lightingLayer.renderLightBeam(displace,player.angle,700,500,player.emotion);
                 lightingLayer.renderPointLight(displace,50,player.emotion);
-                updateGlow(player.x,player.y,200,arrayToColor(player.emotion));
-                updateGlowCone(player.x,player.y,player.angle,arrayToColor(player.emotion));
             }    
         }
     }
 
     //draws world objects
-    for (var name in gameState.objects){
-        let obj = gameState.objects[name];
-        let objImg = worldImages[obj.img];
-
-        push();
+    for (var id in gameState.objects){
+        let obj = gameState.objects[id];
         displace.x = obj.x - myInterpPos.x;
         displace.y = obj.y - myInterpPos.y;
+        push();
         translate(displace.x, displace.y);
-        image(objImg, 0, 0, obj.w*worldScale, obj.h*worldScale);
+        let objImg = worldImages[obj.img]; //gets object sprite
+
+        if(obj.img == 'vent'){ //selects the vents and adds bubbles coming out of them
+            if(frameCount % 2 == 0){
+                let life = (Math.random() * 10) + 100;
+                let x = random(obj.x-obj.w/5*worldScale,obj.x+obj.w/5*worldScale);
+                let y = random(obj.y-10/2*worldScale,obj.y+10/2*worldScale);
+                bubbles.addBubble(x,y,0,obj.a*-5,life*obj.a/4);
+            }
+        }
+
+        image(objImg, 0, 0, obj.w*worldScale, obj.h*worldScale); //draws object
+
+        if('glow' in obj){//if the object glows
+            objImg = worldImages[obj.img + '_glow']; //get glow image
+            lightingLayer.renderImage(objImg,displace,obj.w*worldScale,obj.h*worldScale,color(obj['glow'])); //render glow
+        }
         pop();  
     }
 
     particleSystem.update(myInterpPos);
     particleSystem.draw(myInterpPos);
+    bubbles.update();
+    bubbles.draw(myInterpPos);
 
-    glowObjects.forEach(obj =>{
-        let objImg = worldImages[obj.img];
-        // push();
-        displace.x = obj.x - myInterpPos.x;
-        displace.y = obj.y - myInterpPos.y;
-        lightingLayer.renderImage(objImg,displace,obj.w*worldScale,obj.h*worldScale,obj.color);
-    });
     lightingLayer.render(); // DON'T DRAW PAST THIS POINT
+
+    fill(255);
+    textSize(32);
+    text(Math.floor(frameRate()), -500, -300);
+    
 
     //send client info to server
     if(myPlayer.femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
@@ -268,8 +276,6 @@ if(!isMale)setInterval(function() {
     new_emotion = (faceReader.getEmotionColor()); //updates player emotion color
 }, 500);
 
-
-
 //connected to the server
 function onConnect() {
     if (socket.id) {
@@ -285,11 +291,20 @@ function onMessage(msg) {
 }
 
 function onCall(input) {
-    var MyPlayer = gameState[socket.id];
+    var myPlayer = gameState.players[socket.id]; //get client info from server
     var otherPlayer = gameState[input.id];
+
+    //draw some BUBS
+    for(let i = 0; i < 3; i++){
+        let vX = (Math.random() * 2) - 1;
+        let vY = (Math.random() * 2) - 1;
+        let life = 20 + (Math.random() * 80);
+        this.bubbles.addBubble(otherPlayer.x,otherPlayer.y,vX,vY,life);
+    }
+
     //CALCULATE PAN VALUE
     var pan;
-    let xDifference = otherPlayer.x - MyPlayer.x;
+    let xDifference = otherPlayer.x - myPlayer.x;
     if(abs(xDifference) < 100)
         pan = 0;
     else {
@@ -302,7 +317,7 @@ function onCall(input) {
 
     //CALCULATE VOL VALUE
     var vol;
-    let distance = dist(MyPlayer.x, MyPlayer.y, otherPlayer.x, otherPlayer.y);
+    let distance = dist(myPlayer.x, myPlayer.y, otherPlayer.x, otherPlayer.y);
     distance = constrain(distance - 150, 0, distance);
     vol = constrain(distance/250, 0, 1);
     vol = 1 - vol;
@@ -315,26 +330,22 @@ function onStateUpdate(state) {
         //copy the state locally and the time of the update
         lastServerUpdate = Date.now();
         gameState = state;
-        if(glowObjects.length==0){
-            for (var name in gameState.objects){
-                let obj = gameState.objects[name];
-                if(objectNames.includes(obj.img + '_glow')){
-                    glowObjects.push({
-                        img: obj.img + '_glow',
-                        x: obj.x,
-                        y: obj.y,
-                        w: obj.w,
-                        h: obj.h,
-                        color: null,
-                    })
-                }
-            }
-        }
     }
 }
 
 function mousePressed() {
-    if(mouseButton == LEFT && canCall) {
+    if(mouseButton == LEFT && canCall && socket) {
+
+        var myPlayer = gameState.players[socket.id]; //get client info from server
+
+        //draw some bubs when calling
+        for(let i = 0; i < 3; i++){
+            let vX = (Math.random() * 2) - 1;
+            let vY = (Math.random() * 2) - 1;
+            let life = 20 + (Math.random() * 80);
+            this.bubbles.addBubble(myPlayer.x,myPlayer.y,vX,vY,life);
+        }
+
         canCall = false;
 
         var callName;
@@ -348,7 +359,7 @@ function mousePressed() {
     }
 }
 
-function lerp_triple(triple1, triple2, lerp_value) {
+function lerp_triple(triple1, triple2, lerp_value) { //lerp an array
   var triple3 = [0,0,0];
   triple3[0] = lerp(triple1[0],triple2[0], lerp_value);
   triple3[1] = lerp(triple1[1],triple2[1], lerp_value);
@@ -356,18 +367,18 @@ function lerp_triple(triple1, triple2, lerp_value) {
   return triple3;
 }
 
-function lerpColor_add(color1,color2,lerp_value){
-    let r = red(color1) + (red(color2)*lerp_value);
-    let g = green(color1) + (green(color2)*lerp_value);
-    let b = blue(color1) + (blue(color2)*lerp_value);
-    return color(r,g,b);
-}
-
-function arrayToColor(array){
+function arrayToColor(array){ 
     let r = array[0];
     let g = array[1];
     let b = array[2];
     return color(r,g,b);
+}
+
+function ColorToArray(color){
+    let r = red(color);
+    let g = green(color);
+    let b = blue(color);
+    return [r,g,b];
 }
 
 function getDistance(x1,y1,x2,y2){
@@ -377,16 +388,28 @@ function getDistance(x1,y1,x2,y2){
 }
 
 
-function updateGlow(x,y,r,glowColor){
-    glowObjects.forEach(obj=>{
-        let distance = getDistance(x,y,obj.x,obj.y);
-        if(distance<r/2){
-            obj.color = lerpColor(obj.color,glowColor,0.1);
+function updateGlow(x,y,r,glowColor){ //finds objects the player is influencing and adds player color to glow
+    for(var id = 0; id<gameState.objects.length; id++){
+        let obj = gameState.objects[id];
+        if(objectNames.includes(obj.img + '_glow')){ //if object has a glow sprite
+            let distance = getDistance(x,y,obj.x,obj.y); //if x,y close enough to object
+            if(distance<r/2){
+
+                if(obj.img == 'vent'){ //if vent
+                    glowColor = color(red(glowColor),0,0); //make it only accept the red glow
+                }
+
+                socket.emit('glowObjectUpdate',{ //send new glow for that object to the server
+                    glow: ColorToArray(glowColor),
+                    id: id,
+                    fr: frameRate()
+                });
+            }
         }
-    });
+    }
 }
 
-function updateGlowCone(x,y,angle,glowColor){
+function updateGlowCone(x,y,angle,glowColor){ //takes cone values and calles update glow inside that cone "roughly"
     let range = 1000;
     let freq = 4;
     for(let i = 0; i < freq; i++){

@@ -59,3 +59,53 @@ class ParticleSystem{
 
 
 }
+
+class BubbleSystem{
+    constructor(){
+        this.bubbles = {};
+        this.bubID = 0;
+    }
+
+    addBubble(x,y,vX,vY,life){
+        this.bubID += 1;
+        this.bubbles[this.bubID] = {
+            x: x,
+            y: y,
+            vX: vX,
+            vY: vY,
+            r: (Math.random() * 5),
+            life: life,
+        }
+    }
+
+    update(){
+        for(var id in this.bubbles){
+            let bub = this.bubbles[id];
+            bub.x += bub.vX;
+            bub.y += bub.vY;
+            bub.life -= 1;
+            if(bub.life <= 0){
+                delete this.bubbles[id];
+            }
+        }
+    }
+
+    draw(pos){
+        noFill();
+        stroke(255);
+        strokeWeight(2);
+
+        for(var id in this.bubbles){
+            let bub = this.bubbles[id];
+            let offset = {
+                x: bub.x - pos.x,
+                y: bub.y - pos.y
+            }
+            ellipse(offset.x, offset.y, bub.r, bub.r);
+        }
+
+        noStroke();
+    }
+
+
+}
