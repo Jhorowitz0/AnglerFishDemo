@@ -75,9 +75,9 @@ io.on('connection', function (socket) {
     socket.on('glowObjectUpdate', newObject => { //if sent a new glow for an object, update that glow
         let obj = gameState.objects[newObject.id];
 
-        let lerpValue = 0.005;
-        if(obj.fr < 60) lerpValue = 0.03
-        if(obj.fr < 10) lerpValue = 0.5
+        let lerpValue = 0.01;
+        if(obj.fr < 60) lerpValue = 0.03;
+        if(obj.fr < 10) lerpValue = 0.5;
 
         let curGlow = obj['glow']
         let r = curGlow[0] + (newObject.glow[0]) * lerpValue;
