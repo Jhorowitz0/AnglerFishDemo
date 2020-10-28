@@ -75,8 +75,7 @@ io.on('connection', function (socket) {
     socket.on('glowObjectUpdate', newObject => { //if sent a new glow for an object, update that glow
         let obj = gameState.objects[newObject.id];
 
-        let lerpValue = 0.01;
-        if(obj.fr < 60) lerpValue = 0.03;
+        let lerpValue = 0.03;
         if(obj.fr < 10) lerpValue = 0.5;
 
         let curGlow = obj['glow']
@@ -153,9 +152,21 @@ setInterval(function() {
         var x = p.controls.xDiff;
         var y = p.controls.yDiff;
 
+        //if there is a vent add acceleration
+        gameState.objects.forEach(obj =>{
+            if(obj.img == "vent"){
+                if(isInSquare(p.x,p.y,obj.x,obj.y,obj.w/2,500)){
+                    p.aY -= obj.a;
+                }
+                else if(p.aY < 0) p.aY += 1;
+                else p.aY == 0;
+            }
+        });
+
         //moves player
         if(Math.abs(x) > deadZone) {
             p.vX = x/meter*playerSpeed;
+            p.vX += p.aX; // adds acceleration
 
             if(p.vX > 0 && p.x > bounds.x.max)
                 p.vX = 0;
@@ -167,6 +178,7 @@ setInterval(function() {
         
         if(Math.abs(y) > deadZone) {
             p.vY = y/meter*playerSpeed;
+            p.vY += p.aY; // adds acceleration
 
             if(p.vY > 0 && p.y > bounds.y.max)
                 p.vY = 0;
@@ -176,18 +188,8 @@ setInterval(function() {
         else
             p.vY = 0;
 
-        gameState.objects.forEach(obj =>{
-            if(obj.img == "vent"){
-                if(isInSquare(p.x,p.y,obj.x,obj.y,obj.w/2,500)){
-                    p.aY -= obj.a;
-                }
-                else if(p.aY < 0) p.aY += 1;
-                else p.aY == 0;
-            }
-        });
-
-        p.x += p.vX+p.aX;
-        p.y += p.vY+p.aY;
+        p.x += p.vX;
+        p.y += p.vY;
 
         //Calculate Color shift
         p.emotionF = p.controls.emotion;
