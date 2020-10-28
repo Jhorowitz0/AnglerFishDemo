@@ -279,6 +279,8 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
 
 function initClient(){
     let myp5 = new p5(sketch);
+    var loadingScreen = document.getElementById("loading");
+    loadingScreen.remove();
 }
 
 function preload(){

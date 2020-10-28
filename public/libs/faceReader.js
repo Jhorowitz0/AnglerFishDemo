@@ -40,7 +40,7 @@ class FaceReader {
 
         //set position and color if at least 1 face is detected
         if(detections != null && detections[0] != null) {
-            show('loading', false); //disable loading screen 
+            initClient();
             this.updateEmotions(detections[0].expressions);
           
             //setup seperate canvas to display face input feedback
@@ -75,15 +75,9 @@ class FaceReader {
     }
 
     disableLoading(){
-        show('loading', false); //disable loading screen
         initClient();
     }
 }
 
-function show(id, value) {
-    // document.getElementById(id).style.display = value ? 'block' : 'none';
-    var myobj = document.getElementById("loading");
-    myobj.remove();
-}
 
 var faceReader = new FaceReader(); // Object for reading emotion
