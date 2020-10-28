@@ -6,15 +6,16 @@ const video = document.getElementById("video");
 
 //Function that asks for webcam data and streams it to video element
 function startVideo(){
-    console.log('started video');
     navigator.mediaDevices.getUserMedia( //<--asks for camera
         {video : true}
     ) 
     .then(function(stream) {
         video.srcObject = stream; //If it succeeds it streams it the html element
+        console.log('Camera stream successfully loaded...checking for faces');
+        startFaceReader();
     })
     .catch(function(err) {
-        console.log('camera loading failed...spawning as male');
+        console.log('Camera loading failed...spawning as male');
         isMale = true;
         initClient();
     });

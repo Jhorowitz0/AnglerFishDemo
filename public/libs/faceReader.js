@@ -17,6 +17,8 @@ class FaceReader {
         this.surprised = 0;
         this.disgusted = 0;
         this.fearful = 0;
+
+        this.foundFace = false;
     }
 
     //takes an expression and updates the emotion variables
@@ -40,7 +42,10 @@ class FaceReader {
 
         //set position and color if at least 1 face is detected
         if(detections != null && detections[0] != null) {
-            initClient();
+            if(!this.foundFace){
+                initClient();
+                this.foundFace = true;
+            }
             this.updateEmotions(detections[0].expressions);
           
             //setup seperate canvas to display face input feedback
@@ -81,3 +86,10 @@ class FaceReader {
 
 
 var faceReader = new FaceReader(); // Object for reading emotion
+
+function startFaceReader(){
+    setInterval(function() {
+        faceReader.readFace(); //gets emotion from face on campera if there is one
+        new_emotion = (faceReader.getEmotionColor()); //updates player emotion color
+    }, 500);
+}

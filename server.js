@@ -57,6 +57,7 @@ io.on('connection', function (socket) {
         isMale: true,
         femaleID: null,
         numAttached: 0,
+        attached: {},
         x: Math.random(bounds.x.min,bounds.x.max),
         y: Math.random(bounds.y.min,bounds.y.max),
         angle: 0,
@@ -99,7 +100,8 @@ io.on('connection', function (socket) {
 
     socket.on('attach', id =>{
         gameState.players[id].numAttached += 1;
-        console.log('player now has ' + gameState.players[id].numAttached + ' fish attached!');
+        gameState.players[id].attached[socket.id] = 1;
+        console.log(gameState.players[id].attached);
     });
 
     socket.on('clientCall', function(callName) { //callname : string
@@ -110,8 +112,17 @@ io.on('connection', function (socket) {
         console.log("User disconnected");
         
         let player = gameState.players[socket.id];
-        if(player.femaleID != null){ //if the player was attached
-            gameState.players[player.femaleID].numAttached -= 1; //remove it from female
+
+        if(player.femaleID != null){ //if the player was attached to another player remove it from them
+            gameState.players[player.femaleID].numAttached -= 1; 
+            delete gameState.players[player.femaleID].attached[socket.id];
+        }
+
+        //if the player had fish attached to them, SET THEM FREE!
+        if(!player.isMale){
+            for(id in player.attached){
+                io.to(id).emit('unattach',player);
+            }
         }
         //delete the player object on disconnect
         delete gameState.players[socket.id];

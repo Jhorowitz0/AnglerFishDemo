@@ -8,9 +8,9 @@ var socket = null;
 var center;
 
 //player specific vals
+var myPlayer = null;
 var isMale = true;
 var femaleID = null;
-var numAttached = 0;
 var emotion = [255,255,255];
 var new_emotion = [255,255,255];
 var isFlipped = false;
@@ -93,6 +93,8 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         socket.on('call', onCall);
         //copy game state from server
         socket.on('state', onStateUpdate);
+        //unattach player
+        socket.on('unattach', onUnattach);
         //starts socket
         socket.open();
     }
@@ -112,7 +114,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
 
         angle = Math.atan2(mouseY-height/2, mouseX-width/2);
         isFlipped = mouseX < center.x;  //flips orientation when needed
-        var myPlayer = gameState.players[socket.id]; //get client info from server
+        myPlayer = gameState.players[socket.id]; //get client info from server
         //if the player is attached to a female, this code basically makes them that female for viewing purposes
         //except they cant control her only watch
         if(femaleID != null){ 
@@ -199,7 +201,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
                     }
                 }
                 if(player.femaleID == null){ //if theyre a female and not attached to anyone..draw them
-                    drawFemaleFish(fish_sprites, player.angle, displace, player.isFlipped, player.wiggleRate, myPlayer.numAttached);
+                    drawFemaleFish(fish_sprites, player.angle, displace, player.isFlipped, player.wiggleRate, player.numAttached);
                     lightingLayer.renderLightBeam(displace,player.angle,700,500,player.emotion);
                     lightingLayer.renderPointLight(displace,50,player.emotion);
                 }    
@@ -251,8 +253,9 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         // text(Math.floor(frameRate()), -500, -300); //fps counter
         
 
+        console.log(femaleID);
         //send client info to server
-        if(myPlayer.femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
+        if(femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
             socket.emit('clientUpdate', {
                 isMale: isMale,
                 femaleID: femaleID,
@@ -272,7 +275,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
     mousePressed = function(){
         if(mouseButton == LEFT && canCall && socket) {
 
-            var myPlayer = gameState.players[socket.id]; //get client info from server
+            myPlayer = gameState.players[socket.id]; //get client info from server
     
             //draw some bubs when calling
             for(let i = 0; i < 3; i++){
@@ -298,8 +301,11 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
 
 function spawnAsFemale(){
     isMale = false; 
-    initFaceApi();
-    console.log('spawning as female')
+    // initFaceApi();
+    console.log('spawning as female');
+    var buttons = document.getElementById("button_wrapper");
+    buttons.remove();
+    initClient();
 }
 
 function spawnAsMale(){
@@ -349,11 +355,6 @@ function setup() {
 function draw() {
 }
 
-// get players face on an interval and update emotion
-if(!isMale)setInterval(function() {
-    faceReader.readFace(); //gets emotion from face on campera if there is one
-    new_emotion = (faceReader.getEmotionColor()); //updates player emotion color
-}, 500);
 
 //connected to the server
 function onConnect() {
@@ -370,7 +371,7 @@ function onMessage(msg) {
 }
 
 function onCall(input) {
-    var myPlayer = gameState.players[socket.id]; //get client info from server
+    myPlayer = gameState.players[socket.id]; //get client info from server
     var otherPlayer = gameState.players[input.id];
 
     //draw some BUBS
@@ -402,6 +403,29 @@ function onCall(input) {
     vol = 1 - vol;
 
     soundSystem.playCall(input.name, vol, pan);
+}
+
+function onUnattach(id){
+    console.log('youre FREE!');
+    myPlayer = gameState.players[socket.id];
+    let female = gameState.players[femaleID];
+    isMale = true;
+    myPlayer.x = female.x;
+    myPlayer.y = female.y;
+    myPlayer.femaleID = null;
+    socket.emit('clientUpdate', {
+        isMale: true,
+        femaleID: null,
+        xDiff: mouseX - center.x,
+        yDiff: mouseY - center.y,
+        angle: Math.atan2(mouseY-center.y
+                        , mouseX-center.x),
+        isFlipped: isFlipped,
+        emotion: emotion,
+        wiggleRate: wiggleRate
+    });
+    isMale = true;
+    femaleID = null;
 }
 
 function onStateUpdate(state) {
