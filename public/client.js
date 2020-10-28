@@ -67,7 +67,6 @@ var objectNames = [
 var displace = {x: 0, y: 0};
 
 function preload(){
-
     objectNames.forEach(name =>{
         worldImages[name] = loadImage('background/' + name + '.png');
     });
@@ -292,14 +291,14 @@ function onMessage(msg) {
 
 function onCall(input) {
     var myPlayer = gameState.players[socket.id]; //get client info from server
-    var otherPlayer = gameState[input.id];
+    var otherPlayer = gameState.players[input.id];
 
     //draw some BUBS
     for(let i = 0; i < 3; i++){
         let vX = (Math.random() * 2) - 1;
         let vY = (Math.random() * 2) - 1;
         let life = 20 + (Math.random() * 80);
-        this.bubbles.addBubble(otherPlayer.x,otherPlayer.y,vX,vY,life);
+        bubbles.addBubble(otherPlayer.x,otherPlayer.y,vX,vY,life);
     }
 
     //CALCULATE PAN VALUE
@@ -343,7 +342,7 @@ function mousePressed() {
             let vX = (Math.random() * 2) - 1;
             let vY = (Math.random() * 2) - 1;
             let life = 20 + (Math.random() * 80);
-            this.bubbles.addBubble(myPlayer.x,myPlayer.y,vX,vY,life);
+            bubbles.addBubble(myPlayer.x,myPlayer.y,vX,vY,life);
         }
 
         canCall = false;
