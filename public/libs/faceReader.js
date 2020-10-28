@@ -75,10 +75,15 @@ class FaceReader {
     }
 
     disableLoading(){
-        show('loading', false); //disable loading screen 
+        show('loading', false); //disable loading screen
+        initClient();
     }
 }
 
 function show(id, value) {
-    document.getElementById(id).style.display = value ? 'block' : 'none';
+    // document.getElementById(id).style.display = value ? 'block' : 'none';
+    var myobj = document.getElementById("loading");
+    myobj.remove();
 }
+
+var faceReader = new FaceReader(); // Object for reading emotion

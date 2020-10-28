@@ -6,6 +6,7 @@ const video = document.getElementById("video");
 
 //Function that asks for webcam data and streams it to video element
 function startVideo(){
+    console.log('started video');
     navigator.mediaDevices.getUserMedia( //<--asks for camera
         {video : true}
     ) 
@@ -13,17 +14,21 @@ function startVideo(){
         video.srcObject = stream; //If it succeeds it streams it the html element
     })
     .catch(function(err) {
-        console.log(err);
+        console.log('camera loading failed');
         faceReader.disableLoading();
         isMale = true;
     });
 }
 
 //list of face-api models to load before using webcam input
-Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-    faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-    faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-    faceapi.nets.faceExpressionNet.loadFromUri("/models")
-]).then(startVideo);
+function initFaceApi(){
+    Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+        faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+        faceapi.nets.faceExpressionNet.loadFromUri("/models")
+    ]).then(startVideo);
+}
+
+initFaceApi();
 
