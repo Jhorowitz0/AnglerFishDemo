@@ -246,11 +246,12 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         displace.y = 0 - myInterpPos.y;
         image(worldImages["bounds"],displace.x,displace.y,7800,2000);
 
-        // lightingLayer.render(); // DON'T DRAW PAST THIS POINT
+        lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
+        //fps counter
         // fill(255);
         // textSize(32);
-        // text(Math.floor(frameRate()), -500, -300); //fps counter
+        // text(Math.floor(frameRate()), -500, -300); 
         
 
         console.log(femaleID);
@@ -301,11 +302,9 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
 
 function spawnAsFemale(){
     isMale = false; 
-    // initFaceApi();
-    console.log('spawning as female');
+    initFaceApi();
     var buttons = document.getElementById("button_wrapper");
     buttons.remove();
-    initClient();
 }
 
 function spawnAsMale(){

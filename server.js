@@ -80,7 +80,7 @@ io.on('connection', function (socket) {
         let obj = gameState.objects[newObject.id];
 
         let lerpValue = 0.03;
-        if(obj.fr < 10) lerpValue = 0.5;
+        if(obj.fr < 10) lerpValue = 0.7;
 
         let curGlow = obj['glow']
         let r = curGlow[0] + (newObject.glow[0]) * lerpValue;
