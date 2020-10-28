@@ -42,6 +42,9 @@ var lightingLayer = new LightingLayer();
 var worldScale = 2/3;
 var worldImages = {};
 var objectNames = [
+    "bounds",
+    "background_1",
+    "background_2",
     "amm","amm_glow",
     "coral1",
     "coral2",
@@ -98,7 +101,6 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
     draw = function draw(){
         background(10); //paint it black
         
-
         emotion = lerp_triple(emotion, new_emotion, 0.1); //eases to next emotion
         
         lightingLayer.startRender();
@@ -139,6 +141,25 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
 
         displace = {x: 0, y: 0}; //no displacement cause client
 
+        var myInterpPos = getInterpPos(myPlayer, Date.now(), lastServerUpdate, SERVER_UPDATE_TIME); //interp client values
+
+
+
+        let backgroundSize = {x:7800,y:2000};
+
+        //draws bacground
+        displace.x = (0 - myInterpPos.x) * 0.8;
+        displace.y = (0 - myInterpPos.y) * 0.8;
+        image(worldImages["background_2"],displace.x,displace.y,7800 * 0.8 ,2000 * 0.8);
+
+        //draws bacground
+        displace.x = (0 - myInterpPos.x) * 0.9;
+        displace.y = (0 - myInterpPos.y) * 0.9;
+        image(worldImages["background_1"],displace.x,displace.y,7800 * 0.9 ,2000 * 0.9);
+
+
+        displace = {x: 0, y: 0};
+
         if(!isMale){ //if theyre not male (or spectating a female), draw female fish
             drawFemaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate, myPlayer.numAttached); //draw client fishie
             lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
@@ -156,9 +177,6 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
                 updateGlow(myPlayer.x,myPlayer.y,200,arrayToColor(emotion));
             }
         }
-
-
-        var myInterpPos = getInterpPos(myPlayer, Date.now(), lastServerUpdate, SERVER_UPDATE_TIME); //interp client values
 
         for (var playerId in gameState.players) { //loop through players
             if(playerId == socket.id || playerId == femaleID) { continue; } //skip if client or spectated female
@@ -221,7 +239,12 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         bubbles.update();
         bubbles.draw(myInterpPos);
 
-        lightingLayer.render(); // DON'T DRAW PAST THIS POINT
+        //draws foreground
+        displace.x = 0 - myInterpPos.x;
+        displace.y = 0 - myInterpPos.y;
+        image(worldImages["bounds"],displace.x,displace.y,7800,2000);
+
+        // lightingLayer.render(); // DON'T DRAW PAST THIS POINT
 
         // fill(255);
         // textSize(32);

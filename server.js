@@ -1,5 +1,6 @@
 //create a web application that uses the express frameworks and socket.io to communicate via http (the web protocol)
 var express = require('express');
+var creatures = require('./creatures.js');
 var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -22,18 +23,20 @@ var bounds = {
 }
 
 
+
 //Entire gamestate will consist of prebuilt objects and player objects
 var gameState = {
     players: {},
     objects:[
-        {img:"amm", x:480, y:450, w:450, h:600, 'glow': [0,0,0]},
-        {img:"coral1", x:250, y:480, w:330, h:520},
-        {img:"coral2", x:120, y:480, w:330, h:560},
+        {img:"amm", x:480, y:350, w:450, h:600, 'glow': [0,0,0]},
+        {img:"coral1", x:250, y: 380, w:330, h:520},
+        {img:"coral2", x:120, y:380, w:330, h:560},
         {img:"rock13", x:-800, y:350, w:750, h:750},
-        {img:"rock10", x:-300, y:545, w:500, h:200},
-        {img:"rock5", x:-600, y:525, w:200, h:200},
-        {img:"sub", x:1400, y:400, w:900, h:800},
-        {img:"vent", x:0, y:500, w:300, h:2000, a:0, 'glow': [0,0,0]} //a is vents shooting acceleration
+        {img:"rock10", x:-300, y:500, w:500, h:200},
+        {img:"rock5", x:-600, y:425, w:200, h:200},
+        {img:"sub", x:-1400, y:400, w:900, h:800},
+        {img:"vent", x:2700, y:390, w:400, h:2000, a:0, 'glow': [0,0,0]}, //a is vents shooting acceleration
+        {img:"rock5", x:-2700, y:340, w:200, h:200},
     ]
 }
 var worldScale = 2/3;
@@ -51,7 +54,7 @@ io.on('connection', function (socket) {
     
     //makes a new player on connect
     gameState.players[socket.id] = {
-        isMale: false,
+        isMale: true,
         femaleID: null,
         numAttached: 0,
         x: Math.random(bounds.x.min,bounds.x.max),
@@ -157,6 +160,9 @@ setInterval(function() {
             if(obj.img == "vent"){
                 if(isInSquare(p.x,p.y,obj.x,obj.y,obj.w/2,500)){
                     p.aY -= obj.a;
+                    if(p.aY < -500){
+                        p.aY = -500;
+                    }
                 }
                 else if(p.aY < 0) p.aY += 1;
                 else p.aY == 0;
