@@ -8,7 +8,7 @@ var socket = null;
 var center;
 
 //player specific vals
-var isMale = false;
+var isMale = true;
 var femaleID = null;
 var numAttached = 0;
 var emotion = [255,255,255];
@@ -271,10 +271,17 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
             setTimeout( () => { canCall = true;}, 2000);
         }
     }
+}
 
-    
+function spawnAsFemale(){
+    isMale = false; 
+    initFaceApi();
+    console.log('spawning as female')
+}
 
-
+function spawnAsMale(){
+    isMale = true; 
+    initClient();
 }
 
 function initClient(){

@@ -14,9 +14,9 @@ function startVideo(){
         video.srcObject = stream; //If it succeeds it streams it the html element
     })
     .catch(function(err) {
-        console.log('camera loading failed');
-        faceReader.disableLoading();
+        console.log('camera loading failed...spawning as male');
         isMale = true;
+        initClient();
     });
 }
 
@@ -30,5 +30,4 @@ function initFaceApi(){
     ]).then(startVideo);
 }
 
-initFaceApi();
 

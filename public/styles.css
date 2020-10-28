@@ -11,6 +11,19 @@ body {
   left:0;
 }
 
+#p5_loading {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    background-image: url("sprites/anglerfish_loading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 #defaultCanvas1{
   display: none;
 }
@@ -42,8 +55,35 @@ body {
     z-index: 100;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(25, 25, 25, 1);
+    background-color: black;
     background-image: url("sprites/anglerfish_loading.gif");
     background-repeat: no-repeat;
     background-position: center;
+}
+
+#button_wrapper{
+  position: absolute;
+  top: 50%;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-content: center;
+}
+
+button{
+  margin: auto;
+
+  background-color: transparent; /* Green */
+  color: white;
+  border: solid white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+button:hover{
+  background-color: white;
+  color: black;
 }
