@@ -7,6 +7,7 @@ var io = require('socket.io')(http);
 
 var world = require("./public/world.json");
 var utils = require("./public/libs/utils.js");
+const { lerp_triple } = require('./public/libs/utils.js');
 
 //State that is updated across all clients
 var gameState = {
@@ -60,17 +61,10 @@ io.on('connection', function (socket) {
         let lerpValue = 0.03;
         if(obj.fr < 10) lerpValue = 0.7;
 
-        let curGlow = obj['glow']
-        let r = curGlow[0] + (newObject.glow[0]) * lerpValue;
-        let g = curGlow[1] + (newObject.glow[1]) * lerpValue;
-        let b = curGlow[2] + (newObject.glow[2]) * lerpValue;
-        if(r > 255) r = 255;
-        if(g > 255) g = 255;
-        if(b > 255) b = 255;
-        obj['glow'] = [r,g,b];
+        obj['glow'] = utils.additive_lerp_triple(obj['glow'], newObject.glow, lerpValue);
 
         if(obj.img == 'vent'){ //if its a vent then update accel according to its glow
-            obj.a = r/255 * 2;
+            obj.a = (obj['glow'][0])/255 * 2;
             if(obj.a > 2) obj.a = 2;
         }
         gameState.objects[newObject.id] = obj;
@@ -114,19 +108,10 @@ setInterval(function() {
     //the code below is what dims objects that arnt illuminated
     gameState.objects.forEach(obj => {
         if('glow' in obj){
-            let glow = obj['glow'];
-            let r = (glow[0] - 5)
-            if(r < 0) r = 0;
-            let g = (glow[1] - 5)
-            if(g < 0) g = 0;
-            let b = (glow[2] - 5)
-            if(b < 0) b = 0;
-            obj['glow'] = [r,g,b];
+            obj['glow'].map(x => Math.max(x - 5,0));
 
-            if(obj.img == 'vent'){
-                obj.a = r/255 * 2;
-                if(obj.a > 2) obj.a = 2;
-            }
+            if(obj.img == 'vent')
+                obj.a = Math.min(obj['glow'][0]/255 * 2, 2);   
         }
     });
 
