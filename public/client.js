@@ -112,7 +112,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
 
         if(gameState == null || gameState.players == null) { return; } //skip drawing if no players
 
-        angle = Math.atan2(mouseY-height/2, mouseX-width/2);
+        angle = Math.atan2(mouseY-center.y, mouseX-center.x);
         isFlipped = mouseX < center.x;  //flips orientation when needed
         myPlayer = gameState.players[socket.id]; //get client info from server
         //if the player is attached to a female, this code basically makes them that female for viewing purposes
@@ -211,11 +211,19 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         //draws world objects
         for (var id in gameState.objects){
             let obj = gameState.objects[id];
+            let objImg = worldImages[obj.img]; //gets object sprite
+            
+            //OCCLUSION CHECK HERE: If image o.o.b., don't draw it!
+            let dist2Obj = dist(obj.x,obj.y,myInterpPos.x,myInterpPos.y) - max(obj.w*worldScale,obj.h*worldScale) - 100;
+            if(dist2Obj > max(windowWidth,windowHeight)) {
+                continue;
+            }
+
             displace.x = obj.x - myInterpPos.x;
             displace.y = obj.y - myInterpPos.y;
             push();
             translate(displace.x, displace.y);
-            let objImg = worldImages[obj.img]; //gets object sprite
+            
 
             if(obj.img == 'vent'){ //selects the vents and adds bubbles coming out of them
                 if(frameCount % 2 == 0){
@@ -369,7 +377,13 @@ function onMessage(msg) {
     }
 }
 
+
 function onCall(input) {
+    let minPan = 800;   //Distances for where panning occurs
+    let panDist = 500;
+    let minVol = 1000;  //Distances for where volume change occurs
+    let volDist = 600;
+
     myPlayer = gameState.players[socket.id]; //get client info from server
     var otherPlayer = gameState.players[input.id];
 
@@ -384,21 +398,21 @@ function onCall(input) {
     //CALCULATE PAN VALUE
     var pan;
     let xDifference = otherPlayer.x - myPlayer.x;
-    if(abs(xDifference) < 100)
+    if(abs(xDifference) < minPan)
         pan = 0;
     else {
         if(xDifference < 0)
-            xDifference += 100;
+            xDifference += minPan;
         else /* xDifference > 0 */
-            xDifference -= 100;
-        pan = constrain(xDifference/150, -1, 1);
+            xDifference -= minPan;
+        pan = constrain(xDifference/panDist, -1, 1);
     }
 
     //CALCULATE VOL VALUE
     var vol;
     let distance = dist(myPlayer.x, myPlayer.y, otherPlayer.x, otherPlayer.y);
-    distance = constrain(distance - 150, 0, distance);
-    vol = constrain(distance/250, 0, 1);
+    distance = constrain(distance - minVol, 0, distance);
+    vol = constrain(distance/volDist, 0, 1);
     vol = 1 - vol;
 
     soundSystem.playCall(input.name, vol, pan);
