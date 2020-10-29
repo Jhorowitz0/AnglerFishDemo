@@ -6,6 +6,7 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 var world = require("./public/world.json");
+var utils = require("./public/libs/utils.js");
 
 //State that is updated across all clients
 var gameState = {

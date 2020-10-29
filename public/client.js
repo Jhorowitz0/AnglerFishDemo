@@ -103,7 +103,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
     draw = function draw(){
         background(10); //paint it black
         
-        emotion = lerp_triple(emotion, new_emotion, 0.1); //eases to next emotion
+        emotion = utils.lerp_triple(emotion, new_emotion, 0.1); //eases to next emotion
         
         lightingLayer.startRender();
 
@@ -167,8 +167,8 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
             lightingLayer.renderLightBeam(displace,myPlayer.angle,1000,800,emotion); //draws client light beam
             lightingLayer.renderPointLight(displace,380,emotion); //draws client point light
             if(femaleID == null){ //making sure its not a male spectating a female
-                updateGlow(myPlayer.x,myPlayer.y,300,arrayToColor(emotion)); //updates objects in vision
-                updateGlowCone(myPlayer.x,myPlayer.y,myPlayer.angle,arrayToColor(emotion)); 
+                updateGlow(myPlayer.x,myPlayer.y,300,utils.arrayToColor(emotion)); //updates objects in vision
+                updateGlowCone(myPlayer.x,myPlayer.y,myPlayer.angle,utils.arrayToColor(emotion)); 
             }
         }
         else{ //if theyre male and not attached draw male fishie
@@ -176,7 +176,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
                 emotion = [150,150,150];
                 drawMaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate);
                 lightingLayer.renderPointLight(displace,200,emotion); //draws client point light
-                updateGlow(myPlayer.x,myPlayer.y,200,arrayToColor(emotion));
+                updateGlow(myPlayer.x,myPlayer.y,200,utils.arrayToColor(emotion));
             }
         }
 
@@ -243,7 +243,6 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
             pop();  
         }
 
-
         particleSystem.update(myInterpPos);
         particleSystem.draw(myInterpPos);
         bubbles.update();
@@ -255,14 +254,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         image(worldImages["bounds"],displace.x,displace.y,7800,2000);
 
         lightingLayer.render(); // DON'T DRAW PAST THIS POINT
-
-        //fps counter
-        // fill(255);
-        // textSize(32);
-        // text(Math.floor(frameRate()), -500, -300); 
         
-
-        console.log(femaleID);
         //send client info to server
         if(femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
             socket.emit('clientUpdate', {
@@ -449,43 +441,11 @@ function onStateUpdate(state) {
     }
 }
 
-function mousePressed() {
-}
-
-function lerp_triple(triple1, triple2, lerp_value) { //lerp an array
-  var triple3 = [0,0,0];
-  triple3[0] = lerp(triple1[0],triple2[0], lerp_value);
-  triple3[1] = lerp(triple1[1],triple2[1], lerp_value);
-  triple3[2] = lerp(triple1[2],triple2[2], lerp_value);
-  return triple3;
-}
-
-function arrayToColor(array){ 
-    let r = array[0];
-    let g = array[1];
-    let b = array[2];
-    return color(r,g,b);
-}
-
-function ColorToArray(color){
-    let r = red(color);
-    let g = green(color);
-    let b = blue(color);
-    return [r,g,b];
-}
-
-function getDistance(x1,y1,x2,y2){
-    let dX = x2-x1;
-    let dY = y2-y1;
-    return Math.sqrt(dX*dX + dY*dY);
-}
-
-
 function updateGlow(x,y,r,glowColor){ //finds objects the player is influencing and adds player color to glow
     for(var id = 0; id<gameState.objects.length; id++){
         let obj = gameState.objects[id];
         if(objectNames.includes(obj.img + '_glow')){ //if object has a glow sprite
-            let distance = getDistance(x,y,obj.x,obj.y); //if x,y close enough to object
+            let distance = utils.getDistance(x,y,obj.x,obj.y); //if x,y close enough to object
             if(distance<r/2){
 
                 if(obj.img == 'vent'){ //if vent
@@ -493,7 +453,7 @@ function updateGlow(x,y,r,glowColor){ //finds objects the player is influencing 
                 }
 
                 socket.emit('glowObjectUpdate',{ //send new glow for that object to the server
-                    glow: ColorToArray(glowColor),
+                    glow: utils.ColorToArray(glowColor),
                     id: id,
                     fr: frameRate()
                 });
