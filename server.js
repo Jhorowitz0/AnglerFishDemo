@@ -5,41 +5,34 @@ var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-const UPDATE_TIME = 1000/10;
-var lastUpdate = Date.now();
-var deltaTime = 0;
+var world = require("./public/world.json");
 
-//Vals for movement of players within our canvas
-var deadZone = 100;
-var meter = 100;
-var playerSpeed = 2.5;
-
-//Vals for our world. Managed by our server
-const WIDTH = 1000;
-const HEIGHT = 1000;
-var bounds = {
-    x: { min: -3000, max: 3000},
-    y: { min: -500, max: 500}
-}
-
-
-
-//Entire gamestate will consist of prebuilt objects and player objects
+//State that is updated across all clients
 var gameState = {
     players: {},
-    objects:[
-        {img:"amm", x:480, y:350, w:450, h:600, 'glow': [0,0,0]},
-        {img:"coral1", x:250, y: 380, w:330, h:520},
-        {img:"coral2", x:120, y:380, w:330, h:560},
-        {img:"rock13", x:-800, y:350, w:750, h:750},
-        {img:"rock10", x:-300, y:500, w:500, h:200},
-        {img:"rock5", x:-600, y:425, w:200, h:200},
-        {img:"sub", x:-1400, y:400, w:900, h:800},
-        {img:"vent", x:2700, y:390, w:400, h:2000, a:0, 'glow': [0,0,0]}, //a is vents shooting acceleration
-        {img:"rock5", x:-2700, y:340, w:200, h:200},
-    ]
+    objects: require("./public/world.json").objects
 }
-var worldScale = 2/3;
+
+//A player instance is created for every client
+class Player {
+    constructor() {
+        this.isMale = true,
+        this.femaleID = null,
+        this.numAttached = 0,
+        this.attached = {},
+        this.x = Math.random(world.bounds.x.min,world.bounds.x.max),
+        this.y = Math.random(world.bounds.y.min,world.bounds.y.max),
+        this.angle = 0,
+        this.isFlipped = false,
+        this.wiggleRate = 0,
+        this.vX = 0,
+        this.vY = 0,
+        this.aX = 0,
+        this.aY = 0,
+        this.emotion = [50,50,50],
+        this.emotionF = null
+    }
+}
 
 //when a client connects serve the static files in the public directory ie public/index.html
 app.use(express.static('public'));
@@ -53,23 +46,7 @@ io.on('connection', function (socket) {
     socket.emit('message', 'You are connected!');
     
     //makes a new player on connect
-    gameState.players[socket.id] = {
-        isMale: true,
-        femaleID: null,
-        numAttached: 0,
-        attached: {},
-        x: Math.random(bounds.x.min,bounds.x.max),
-        y: Math.random(bounds.y.min,bounds.y.max),
-        angle: 0,
-        isFlipped: false,
-        wiggleRate: 0,
-        vX: 0,
-        vY: 0,
-        aX: 0,
-        aY: 0,
-        emotion: [50,50,50],
-        emotionF: null
-    }
+    gameState.players[socket.id] = new Player();
 
 
     socket.on('clientUpdate', function(controls) { //xDiff, yDiff, angle, isflipped, emotion
@@ -152,11 +129,6 @@ setInterval(function() {
         }
     });
 
-    //update each players position based on their controls. 
-    var now = Date.now();
-    deltaTime = (now - lastUpdate) / 1000;
-    lastUpdate = now;
-
     //iterate through the players
     for(var playerId in gameState.players) {
         var p = gameState.players[playerId];
@@ -181,25 +153,25 @@ setInterval(function() {
         });
 
         //moves player
-        if(Math.abs(x) > deadZone) {
-            p.vX = x/meter*playerSpeed;
+        if(Math.abs(x) > world.dead_zone) {
+            p.vX = x/world.meter*world.player_speed;
             p.vX += p.aX; // adds acceleration
 
-            if(p.vX > 0 && p.x > bounds.x.max)
+            if(p.vX > 0 && p.x > world.bounds.x.max)
                 p.vX = 0;
-            if(p.vX < 0 && p.x < bounds.x.min)
+            if(p.vX < 0 && p.x < world.bounds.x.min)
                 p.vX = 0;
         }
         else 
             p.vX = 0;
         
-        if(Math.abs(y) > deadZone) {
-            p.vY = y/meter*playerSpeed;
+        if(Math.abs(y) > world.dead_zone) {
+            p.vY = y/world.meter*world.player_speed;
             p.vY += p.aY; // adds acceleration
 
-            if(p.vY > 0 && p.y > bounds.y.max)
+            if(p.vY > 0 && p.y > world.bounds.y.max)
                 p.vY = 0;
-            if(p.vY < 0 && p.y < bounds.y.min)
+            if(p.vY < 0 && p.y < world.bounds.y.min)
                 p.vY = 0;
         }
         else
@@ -226,24 +198,17 @@ setInterval(function() {
 
     io.sockets.emit('state', gameState);
 
-}, UPDATE_TIME);
+}, world.update_time);
 
 //listen to the port 3000
 http.listen(3000, function () {
     console.log('listening on *:3000');
 });
 
-
-function getDistance(x1,y1,x2,y2){
-    let dX = x2-x1;
-    let dY = y2-y1;
-    return Math.sqrt(dX*dX + dY*dY);
-}
-
 function isInSquare(x1,y1,x2,y2,w,h){
-    let xMin = x2 - (worldScale * w/2);
-    let xMax = x2 + (worldScale * w/2);
-    let yMin = y2 - (worldScale * h/2);
-    let yMax = y2 + (worldScale * h/2);
+    let xMin = x2 - (world.scale * w/2);
+    let xMax = x2 + (world.scale * w/2);
+    let yMin = y2 - (world.scale * h/2);
+    let yMax = y2 + (world.scale * h/2);
     return(x1 > xMin && x1 < xMax && y1 > yMin && y1 < yMax);
 }

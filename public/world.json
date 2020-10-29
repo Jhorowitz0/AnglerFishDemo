@@ -1,0 +1,61 @@
+{
+    "update_time" : 100,
+    "meter" : 100,
+    "player_speed" : 2.5,
+
+    "bounds" : {
+        "x" : {"min":-3000, "max":3000},
+        "y" : {"min":-500, "max":500}
+    },
+    "dead_zone" : 100,
+    "scale" : 0.66,
+
+    "objects" : [
+        {"img" : "amm",  
+            "path" : "./background/amm.png",  
+            "x":480, "y":450, "w":450, "h":600, 
+            "glow": [0,0,0]
+        },
+
+        {"img" : "coral1", 
+            "path" : "./background/coral1.png", 
+            "x":250, "y":480, "w":330, "h":520
+        },
+
+        {"img" : "coral2", 
+            "path" : "./background/coral2.png",
+            "x":120, "y":480, "w":330, "h":560
+        },
+
+        {"img" : "rock13", 
+            "path" : "./background/rock13.png",
+            "x":-800, "y":350, "w":750, "h":750
+        },
+
+        {"img" : "rock10", 
+            "path" : "./background/rock10.png",
+            "x":-300, "y":545, "w":500, "h":200
+        },
+
+        {"img" : "rock5",  
+            "path" : "./background/rock5.png",
+            "x":-600, "y":525, "w":200, "h":200
+        },
+
+        {"img" : "sub",    
+            "path" : "./background/sub.png",
+            "x":1400, "y":400, "w":900, "h":800
+        },
+
+        {"img" : "vent",   
+            "path" : "./background/vent.png",
+            "x":0, "y":500, "w":300, "h":2000, 
+            "a":0, 
+            "glow": [0,0,0]
+        },
+
+        {"img" : "rock5", 
+            "path" : "./background/rock5.png",
+            "x":-2700, "y":340, "w":200, "h":200}
+    ]
+}
