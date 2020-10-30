@@ -9,6 +9,7 @@ class SoundSystem {
         this.jellyfish;
         this.chains;
         this.radio;
+        this.vent;
     }
 
     preload() {
@@ -24,6 +25,10 @@ class SoundSystem {
             1: loadSound('libs/sounds/CaramelDansen_Underwater'),
             2: loadSound('libs/sounds/Ocean_Man_Underwater'),
             3: loadSound('libs/sounds/We_Like_to_Party_Underwater')
+        }
+        this.vent = {
+            "rumble": loadSound('libs/sounds/Vent_Rumble'),
+            "bubble": loadSound('libs/sounds/Vent_Bubble')
         }
         this.callBank = {
             "femaleHappy": {
