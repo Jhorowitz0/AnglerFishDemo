@@ -74,5 +74,33 @@ class SoundSystem {
         sound.play();
     }
 
+    //Calculate pan and vol
+    distanceEffects(xDifference, distance) {
+        let minPan = 800;   //Distances for where panning occurs
+        let panDist = 500;
+        let minVol = 1000;  //Distances for where volume change occurs
+        let volDist = 600;
+
+        //CALCULATE PAN VALUE
+        var pan;
+        if(abs(xDifference) < minPan)
+            pan = 0;
+        else {
+            if(xDifference < 0)
+                xDifference += minPan;
+            else /* xDifference > 0 */
+                xDifference -= minPan;
+            pan = constrain(xDifference/panDist, -1, 1);
+        }
+
+        //CALCULATE VOL VALUE
+        var vol;
+        distance = constrain(distance - minVol, 0, distance);
+        vol = constrain(distance/volDist, 0, 1);
+        vol = 1 - vol;
+
+        return { vol : vol, pan : pan};
+    }
+
     
 }

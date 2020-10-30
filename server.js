@@ -82,7 +82,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('clientCall', function(callName) { //callname : string
-        socket.broadcast.emit('call', {name: callName, id: socket.id});
+        let player = gameState.players[socket.id]
+        socket.broadcast.emit('call', {name: callName, x: player.x, y: player.y } );
     });
 
     socket.on('disconnect', function () {

@@ -364,43 +364,19 @@ function onMessage(msg) {
 }
 
 function onCall(input) {
-    let minPan = 800;   //Distances for where panning occurs
-    let panDist = 500;
-    let minVol = 1000;  //Distances for where volume change occurs
-    let volDist = 600;
-
     myPlayer = gameState.players[socket.id]; //get client info from server
-    var otherPlayer = gameState.players[input.id];
 
     //draw some BUBS
     for(let i = 0; i < 3; i++){
         let vX = (Math.random() * 2) - 1;
         let vY = (Math.random() * 2) - 1;
         let life = 20 + (Math.random() * 80);
-        bubbles.addBubble(otherPlayer.x,otherPlayer.y,vX,vY,life);
+        bubbles.addBubble(input.x,input.y,vX,vY,life);
     }
 
-    //CALCULATE PAN VALUE
-    var pan;
-    let xDifference = otherPlayer.x - myPlayer.x;
-    if(abs(xDifference) < minPan)
-        pan = 0;
-    else {
-        if(xDifference < 0)
-            xDifference += minPan;
-        else /* xDifference > 0 */
-            xDifference -= minPan;
-        pan = constrain(xDifference/panDist, -1, 1);
-    }
+    var alt = soundSystem.distanceEffects(input.x - myPlayer.x, dist(myPlayer.x, myPlayer.y, input.x, input.y));
 
-    //CALCULATE VOL VALUE
-    var vol;
-    let distance = dist(myPlayer.x, myPlayer.y, otherPlayer.x, otherPlayer.y);
-    distance = constrain(distance - minVol, 0, distance);
-    vol = constrain(distance/volDist, 0, 1);
-    vol = 1 - vol;
-
-    soundSystem.playCall(input.name, vol, pan);
+    soundSystem.playCall(input.name, alt.vol, alt.pan);
 }
 
 function onUnattach(id){
