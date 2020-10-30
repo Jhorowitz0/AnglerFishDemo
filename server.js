@@ -111,6 +111,11 @@ io.on('connection', function (socket) {
 //on an interval, update each players position based on their controls. 
 setInterval(function() {
 
+    //update the creatures
+    gameState.creatures.forEach(creature => {
+        creature.obj.update(creature.x, creature.y);
+    });
+
     //the code below is what dims objects that arnt illuminated
     gameState.objects.forEach(obj => {
         if('glow' in obj) {

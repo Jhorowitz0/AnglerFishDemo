@@ -26,6 +26,7 @@ var sprite_paths = {
     "urchin2" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Furchin2.png?v=1604016444802",
     "vent" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Fvent.png?v=1604016445322",
     "vent_glow" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Fvent_glow.png?v=1604016444956",
+    "kelp_stalk" : "./background/stalk.png",
     fish_sprites : {
         female_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338",
         male_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_male.png?v=1604016470520",

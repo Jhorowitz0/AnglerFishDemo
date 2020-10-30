@@ -29,7 +29,7 @@ var fish_sprites = {
 var lighting_sprites ={beam: null, point: null};
 
 //server specific vals
-var gameState = {objects: []};
+var gameState = {objects: [], creatures: []};
 var lastServerUpdate = 0;
 const SERVER_UPDATE_TIME = 1000/10;
 
@@ -65,7 +65,8 @@ var objectNames = [
     "torpedo",
     "urchin1",
     "urchin2",
-    "vent","vent_glow"
+    "vent","vent_glow",
+    "kelp_stalk"
 ];
 var displace = {x: 0, y: 0};
 
@@ -148,12 +149,12 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
 
         let backgroundSize = {x:7800,y:2000};
 
-        //draws bacground
+        //draws background
         displace.x = (0 - myInterpPos.x) * 0.8;
         displace.y = (0 - myInterpPos.y) * 0.8;
         image(worldImages["background_2"],displace.x,displace.y,7800 * 0.8 ,2000 * 0.8);
 
-        //draws bacground
+        //draws background
         displace.x = (0 - myInterpPos.x) * 0.9;
         displace.y = (0 - myInterpPos.y) * 0.9;
         image(worldImages["background_1"],displace.x,displace.y,7800 * 0.9 ,2000 * 0.9);
@@ -242,6 +243,17 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
             pop();  
         }
 
+        //draws creatures
+        gameState.creatures.forEach(creature =>{
+            push();
+            displace.x = creature.x - myInterpPos.x;
+            displace.y = creature.y - myInterpPos.y;
+            translate(displace.x,displace.y);
+            if(creature.type == "kelp")drawKelp(creature.obj);
+            pop();
+        });
+
+        //draw particles
         particleSystem.update(myInterpPos);
         particleSystem.draw(myInterpPos);
         bubbles.update();

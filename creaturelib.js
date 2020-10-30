@@ -8,7 +8,7 @@ const Kelp = class {
             this.nodes.push({x:x,y:y});
         }
         this.amp = 10;
-        this.freq = 0.01;
+        this.freq = 0.05;
         this.t = 0;
     }
 
@@ -21,16 +21,18 @@ const Kelp = class {
             let y1 = this.nodes[i].y;
             let x2 = this.nodes[i-1].x;
             let y2 = this.nodes[i-1].y;
-            let distance = dist(x1,y1,x2,y2);
+            let dx = x2-x1;
+            let dy = y1 - y2;
+            let distance = Math.sqrt((dx*dx) + (dy*dy));
             let vel = distance/1000;
             if(vel<0.02) vel = 0;
             if(distance > 10){
-                x2 += this.amp * sin(this.t+i);
+                x2 += this.amp * Math.sin(this.t+i);
                 this.nodes[i].x = lerp(this.nodes[i].x,x2,vel);
                 this.nodes[i].y= lerp(this.nodes[i].y,y2,vel);
             }
-            this.nodes[i].y -= 0.6;
-            this.leaves[i].update(this.nodes[i].x,this.nodes[i].y);
+            this.nodes[i].y -= 8;
+            //this.leaves[i].update(this.nodes[i].x,this.nodes[i].y);
         }
     }
 }
@@ -56,15 +58,17 @@ const KelpLeaf = class{
             let y1 = this.nodes[i].y;
             let x2 = this.nodes[i-1].x;
             let y2 = this.nodes[i-1].y;
-            let distance = dist(x1,y1,x2,y2);
+            let dx = x2-x1;
+            let dy = y1 - y2;
+            let distance = Math.sqrt((dx*dx) + (dy*dy));
             let vel = distance/1000;
             if(vel<0.02) vel = 0;
             if(distance > 10){
-                x2 += this.amp * sin(this.t+i);
+                x2 += this.amp * Math.sin(this.t+i);
                 this.nodes[i].x = lerp(this.nodes[i].x,x2,vel);
                 this.nodes[i].y= lerp(this.nodes[i].y,y2,vel);
             }
-            this.nodes[i].y -= 0.6;
+            this.nodes[i].y -= 8;
         }
     }
 }
@@ -80,3 +84,10 @@ const creatures = {
 }
 
 module.exports = creatures;
+
+
+const lerp = function (value1, value2, amount) {
+	amount = amount < 0 ? 0 : amount;
+	amount = amount > 1 ? 1 : amount;
+	return value1 + (value2 - value1) * amount;
+};
