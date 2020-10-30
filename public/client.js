@@ -28,7 +28,6 @@ var fish_sprites = {
 };
 var lighting_sprites ={beam: null, point: null};
 
-
 //server specific vals
 var gameState = {objects: []};
 var lastServerUpdate = 0;
@@ -320,28 +319,29 @@ function initClient(){
 
 function preload(){
     console.log('p5js preloaded');
-    objectNames.forEach(name =>{
-        worldImages[name] = loadImage('background/' + name + '.png');
+    
+    objectNames.forEach(name => {
+        worldImages[name] = loadImage(sprite_paths[name]);
     });
-
+  
     soundSystem.preload();
 
     // load images into variable fish_sprites
-    fish_sprites.female_head = loadImage('./sprites/fish/fish_head_female.png');
-    fish_sprites.male_head = loadImage('./sprites/fish/fish_head_male.png');
-    fish_sprites.body = loadImage('sprites/fish/fish_body.png');
-    fish_sprites.tail = loadImage('sprites/fish/fish_tail.png');
-    fish_sprites.fin = loadImage('sprites/fish/fish_fin.png');
+    fish_sprites.female_head = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338');
+    fish_sprites.male_head = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_male.png?v=1604016470520');
+    fish_sprites.body = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_body.png?v=1604016468743');
+    fish_sprites.tail = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_tail.png?v=1604016471007');
+    fish_sprites.fin = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_tail.png?v=1604016471007');
     lighting_sprites.beam = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_beam.jpg?v=1602857969217');
     lighting_sprites.point = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_point.jpg?v=1602857533800');
 
-    fish_sprites.female_head_attached.push(loadImage('./sprites/fish/fish_head_female.png'));
-
-    for(let i = 1; i <= 5; i++){
-        fish_sprites.female_head_attached.push(
-            loadImage('./sprites/fish/fish_head_female_' + i + '.png')
-        );
-    }
+    fish_sprites.female_head_attached.push(loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338'));
+    
+    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_1.png?v=1604016468743"));
+    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_2.png?v=1604016469106"));
+    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_3.png?v=1604016469795"));
+    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_4.png?v=1604016469976"));
+    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_5.png?v=1604016470159"));
 }
 
 function setup() {
