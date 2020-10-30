@@ -265,6 +265,8 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         image(worldImages["bounds"],displace.x,displace.y,7800,2000);
 
         lightingLayer.render(); // Anything drawn past this point goes over lighting!
+
+        drawFeedback(faceReader.getFeedback());
         
         //send client info to server
         if(femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
@@ -452,4 +454,30 @@ function updateGlowCone(x,y,angle,glowColor){ //takes cone values and calles upd
         let radius = Math.tan(1) * 100 * i;
         updateGlow(xpos,ypos,radius,glowColor);
     }
+}
+
+function drawFeedback(feedback) {
+    if(feedback == null)
+      return;
+    stroke(emotion[0],emotion[1],emotion[2]);
+    noFill();
+
+    let scale = 1
+    let offset = {x:-250, y:-550}
+
+    //left eye
+    beginShape();
+    for(var i=0; i<6; i++) {
+        let p = feedback.left[i];
+        vertex((p.x + offset.x)*scale*-1, (p.y + offset.y)*scale);
+    }
+    endShape(CLOSE);
+
+    //right eye
+    beginShape();
+    for(var i=0; i<6; i++) {
+        let p = feedback.right[i];
+        vertex((p.x + offset.x)*scale*-1, (p.y + offset.y)*scale);
+    }
+    endShape(CLOSE);
 }

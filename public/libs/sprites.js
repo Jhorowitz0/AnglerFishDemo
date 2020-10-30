@@ -28,18 +28,18 @@ var sprite_paths = {
     "vent_glow" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Fvent_glow.png?v=1604016444956",
     "kelp_stalk" : "./background/stalk.png",
     fish_sprites : {
-        female_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338",
-        male_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_male.png?v=1604016470520",
-        body : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_body.png?v=1604016468743",
-        tail : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_tail.png?v=1604016471007",
-        fin : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_fin.png?v=1604016468743",
+        female_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604037350284",
+        male_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_male.png?v=1604037343322",
+        body : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_body.png?v=1604037342088",
+        tail : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_tail.png?v=1604037342616",
+        fin : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_fin.png?v=1604037341857",
         female_head_attached : [
-            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338",
-            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_1.png?v=1604016468743",
-            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_2.png?v=1604016469106",
-            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_3.png?v=1604016469795",
-            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_4.png?v=1604016469976",
-            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_5.png?v=1604016470159"
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604037350284",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_1.png?v=1604037347103",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_2.png?v=1604037349627",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_3.png?v=1604037347140",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_4.png?v=1604037349858",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_5.png?v=1604037350130"
         ]
     },
     lighting_sprites : {
