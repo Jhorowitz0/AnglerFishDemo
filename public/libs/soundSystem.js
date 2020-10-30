@@ -6,11 +6,25 @@ class SoundSystem {
     constructor() {
         this.backtrack;
         this.callBank;
+        this.jellyfish;
+        this.chains;
+        this.radio;
     }
 
     preload() {
         soundFormats('wav','ogg');
         this.backtrack = loadSound('libs/sounds/underwater');
+        this.chains = loadSound('libs/sounds/Chains');
+        this.jellyfish = {
+            1: loadSound('libs/sounds/Jellyfish_Neutral_1'),
+            2: loadSound('libs/sounds/Jellyfish_Neutral_2'),
+            3: loadSound('libs/sounds/Jellyfish_Neutral_3')
+        }
+        this.radio = {
+            1: loadSound('libs/sounds/CaramelDansen_Underwater'),
+            2: loadSound('libs/sounds/Ocean_Man_Underwater'),
+            3: loadSound('libs/sounds/We_Like_to_Party_Underwater')
+        }
         this.callBank = {
             "femaleHappy": {
                 1: loadSound('libs/sounds/Female_Happy_1'),
