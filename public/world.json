@@ -13,65 +13,92 @@
     "objects" : [
         {"img" : "amm",  
             "path" : "./background/amm.png",  
-            "x":480, "y":450, "w":450, "h":600, 
+            "x":480, "y":350, "w":450, "h":600, 
             "glow": [0,0,0]
         },
 
         {"img" : "coral1", 
             "path" : "./background/coral1.png", 
-            "x":250, "y":480, "w":330, "h":520
+            "x":250, "y":380, "w":330, "h":520
         },
 
         {"img" : "coral2", 
             "path" : "./background/coral2.png",
-            "x":120, "y":480, "w":330, "h":560
+            "x":120, "y":380, "w":330, "h":560
         },
 
-        {"img" : "rock13", 
-            "path" : "./background/rock13.png",
-            "x":-800, "y":350, "w":750, "h":750
+        {"img" : "coral2", 
+            "path" : "./background/coral2.png",
+            "x":620, "y":380, "w":330, "h":560
         },
 
-        {"img" : "rock10", 
-            "path" : "./background/rock10.png",
-            "x":-300, "y":545, "w":500, "h":200
+        {"img" : "urchin1", 
+            "path" : "./background/coral2.png",
+            "x":800, "y":500, "w":300, "h":400
         },
 
-        {"img" : "rock5",  
-            "path" : "./background/rock5.png",
-            "x":-600, "y":525, "w":200, "h":200
+        {"img" : "amm", 
+            "path" : "./background/coral2.png",
+            "x":1100, "y":280, "w":530, "h":860,
+            "glow": [0,0,0]
         },
 
-        {"img" : "sub",    
-            "path" : "./background/sub.png",
-            "x":1400, "y":400, "w":900, "h":800
+        {"img" : "coral1", 
+            "path" : "./background/coral2.png",
+            "x":1400, "y":380, "w":330, "h":560
+        },
+
+        {"img" : "coral1", 
+            "path" : "./background/coral2.png",
+            "x":-300, "y":380, "w":330, "h":660
         },
 
         {"img" : "vent",   
             "path" : "./background/vent.png",
-            "x":0, "y":500, "w":300, "h":2000, 
+            "x":-2300, "y":430, "w":300, "h":2000, 
             "a":0, 
             "glow": [0,0,0]
         },
 
-        {"img" : "rock5", 
-            "path" : "./background/rock5.png",
-            "x":-2700, "y":340, "w":200, "h":200}
+        {"img" : "vent",   
+            "path" : "./background/vent.png",
+            "x":-2500, "y":450, "w":450, "h":2000, 
+            "a":0, 
+            "glow": [0,0,0]
+        },
+
+        {"img" : "rock10", 
+            "path" : "./background/rock10.png",
+            "x":-2700, "y":445, "w":500, "h":200
+        },
+
+        {"img" : "vent",   
+            "path" : "./background/vent.png",
+            "x":-2700, "y":410, "w":350, "h":2000, 
+            "a":0, 
+            "glow": [0,0,0]
+        },
+
+        {"img" : "sub", 
+            "path" : "./background/coral2.png",
+            "x":2800, "y":280, "w":830, "h":660
+        }
     ],
 
     
     "creatures" : [
         {
-            "type":"kelp",
-            "x": 3000,
+            "type":"mine",
+            "x": 2600,
             "y": 600,
-            "l": 10,
-            "stalk_image_path": "./background/stalk.png"
+            "l": 12,
+            "chain_image_path": "./background/chain.png",
+            "mine_image_path": "./background/mine.png"
         },
 
         {
             "type":"mine",
-            "x": -1000,
+            "x": 2000,
             "y": 600,
             "l": 16,
             "chain_image_path": "./background/chain.png",
@@ -79,10 +106,106 @@
         },
 
         {
+            "type":"kelp",
+            "x": -850,
+            "y": 600,
+            "l": 10,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -875,
+            "y": 600,
+            "l": 12,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -920,
+            "y": 600,
+            "l": 6,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -945,
+            "y": 600,
+            "l": 10,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -1045,
+            "y": 600,
+            "l": 8,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -1085,
+            "y": 600,
+            "l": 11,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -1120,
+            "y": 600,
+            "l": 13,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -1145,
+            "y": 600,
+            "l": 7,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -1445,
+            "y": 600,
+            "l": 9,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -1495,
+            "y": 600,
+            "l": 4,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -1795,
+            "y": 600,
+            "l": 5,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"kelp",
+            "x": -800,
+            "y": 600,
+            "l": 8,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
             "type":"jellyfish",
-            "x": 0,
-            "y": 0,
-            "s": 300
+            "x": -1400,
+            "y": -650,
+            "s": 200
         }
     ]
 }

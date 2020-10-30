@@ -1,0 +1,57 @@
+{"img" : "rock13", 
+    "path" : "./background/rock13.png",
+    "x":-800, "y":350, "w":750, "h":750
+},
+
+{"img" : "rock10", 
+    "path" : "./background/rock10.png",
+    "x":-300, "y":545, "w":500, "h":200
+},
+
+{"img" : "rock5",  
+    "path" : "./background/rock5.png",
+    "x":-600, "y":525, "w":200, "h":200
+},
+
+{"img" : "sub",    
+    "path" : "./background/sub.png",
+    "x":1400, "y":400, "w":900, "h":800
+},
+
+{"img" : "vent",   
+    "path" : "./background/vent.png",
+    "x":0, "y":500, "w":300, "h":2000, 
+    "a":0, 
+    "glow": [0,0,0]
+},
+
+{"img" : "rock5", 
+    "path" : "./background/rock5.png",
+    "x":-2700, "y":340, "w":200, "h":200}
+
+
+    "creatures" : [
+        {
+            "type":"kelp",
+            "x": 3000,
+            "y": 600,
+            "l": 10,
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"mine",
+            "x": -1000,
+            "y": 600,
+            "l": 16,
+            "chain_image_path": "./background/chain.png",
+            "mine_image_path": "./background/mine.png"
+        },
+
+        {
+            "type":"jellyfish",
+            "x": 0,
+            "y": 0,
+            "s": 300
+        }
+    ]
