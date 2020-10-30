@@ -183,7 +183,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
                 emotion = [150,150,150];
                 drawMaleFish(fish_sprites, myPlayer.angle, displace, isFlipped, myPlayer.wiggleRate);
                 lightingLayer.renderPointLight(displace,200,emotion); //draws client point light
-                updateGlow(myPlayer.x,myPlayer.y,200,utils.arrayToColor(emotion));
+                //updateGlow(myPlayer.x,myPlayer.y,200,utils.arrayToColor(emotion));
             }
         }
 
@@ -273,7 +273,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         displace.y = 0 - myInterpPos.y;
         image(worldImages["bounds"],displace.x,displace.y,7800,2000);
 
-        //lightingLayer.render(); // Anything drawn past this point goes over lighting!
+        lightingLayer.render(); // Anything drawn past this point goes over lighting!
 
         drawFeedback(faceReader.getFeedback());
         
