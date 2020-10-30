@@ -2,9 +2,7 @@ const Kelp = class {
     constructor(x,y,l){
         this.length = l;
         this.nodes = [];
-        this.leaves = [];
         for(let i = 0; i < this.length; i++){
-            this.leaves.push(new KelpLeaf(x,y));
             this.nodes.push({x:x,y:y});
         }
         this.amp = 10;
@@ -32,20 +30,19 @@ const Kelp = class {
                 this.nodes[i].y= lerp(this.nodes[i].y,y2,vel);
             }
             this.nodes[i].y -= 8;
-            //this.leaves[i].update(this.nodes[i].x,this.nodes[i].y);
         }
     }
 }
 
-const KelpLeaf = class{
-    constructor(x,y){
-        this.length = 3;
+const Mine = class {
+    constructor(x,y,l){
+        this.length = l;
         this.nodes = [];
         for(let i = 0; i < this.length; i++){
             this.nodes.push({x:x,y:y});
         }
         this.amp = 10;
-        this.freq = 0.025;
+        this.freq = 0.05;
         this.t = 0;
     }
 
@@ -75,12 +72,9 @@ const KelpLeaf = class{
 
 
 
-
 const creatures = {
-
-    KelpLeaf: KelpLeaf,
-
-    Kelp: Kelp
+    Kelp: Kelp,
+    Mine: Mine
 }
 
 module.exports = creatures;

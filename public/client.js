@@ -66,7 +66,9 @@ var objectNames = [
     "urchin1",
     "urchin2",
     "vent","vent_glow",
-    "kelp_stalk"
+    "kelp_stalk",
+    "chain",
+    "mine"
 ];
 var displace = {x: 0, y: 0};
 
@@ -250,6 +252,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
             displace.y = creature.y - myInterpPos.y;
             translate(displace.x,displace.y);
             if(creature.type == "kelp")drawKelp(creature.obj);
+            else if(creature.type == "mine")drawMine(creature.obj);
             pop();
         });
 

@@ -63,11 +63,19 @@
     "creatures" : [
         {
             "type":"kelp",
-            "x": 100,
+            "x": 3000,
             "y": 600,
             "l": 10,
-            "stalk_image_path": "./background/stalk.png",
-            "tip_image_path": "./background/tip.png"
+            "stalk_image_path": "./background/stalk.png"
+        },
+
+        {
+            "type":"mine",
+            "x": 0,
+            "y": 600,
+            "l": 16,
+            "chain_image_path": "./background/chain.png",
+            "mine_image_path": "./background/mine.png"
         }
     ]
 }

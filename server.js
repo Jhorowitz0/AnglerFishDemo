@@ -18,6 +18,7 @@ var gameState = {
 
 gameState.creatures.forEach(creature => {
     if(creature["type"] == "kelp") creature.obj = new creaturelib.Kelp(creature.x,creature.y,creature.l);
+    else if(creature["type"] == "mine") creature.obj = new creaturelib.Kelp(creature.x,creature.y,creature.l);
 });
 
 //A player instance is created for every client
