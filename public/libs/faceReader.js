@@ -19,6 +19,7 @@ class FaceReader {
         this.fearful = 0;
 
         this.foundFace = false;
+        this.landmarks = null;
     }
 
     //takes an expression and updates the emotion variables
@@ -52,11 +53,11 @@ class FaceReader {
             const canvas = document.getElementById('overlay');
             canvas.getContext("2d").clearRect(0,0,canvas.width, canvas.height);
             const displaySize = { width: canvas.width, height: canvas.height };
+            this.landmarks = detections[0].landmarks;
           
             //use faceapi to draw visual feedback 
             const resizedResults = faceapi.resizeResults(detections, displaySize);  
-            faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
-            faceapi.draw.drawFaceExpressions(canvas, resizedResults, 0.05);
+            
         }
     }
 
@@ -65,7 +66,6 @@ class FaceReader {
         let blue = this.sad + this.fearful;
         let green = this.happy + this.surprised;
         return([red,green,blue]);
-        // return color(red,green,blue);
     }
 
     returnDominant() {
@@ -77,6 +77,16 @@ class FaceReader {
             return "femaleSad";
         else
             return "femaleNeutral";
+    }
+
+    getFeedback() {
+        if(this.landmarks != null) {
+            return {
+                left : this.landmarks.getLeftEye(),
+                right : this.landmarks.getRightEye(),
+            }
+        }
+        return null;
     }
 
     disableLoading(){
@@ -91,5 +101,5 @@ function startFaceReader(){
     setInterval(function() {
         faceReader.readFace(); //gets emotion from face on campera if there is one
         new_emotion = (faceReader.getEmotionColor()); //updates player emotion color
-    }, 500);
+    }, 200);
 }

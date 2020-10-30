@@ -6,8 +6,6 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 var world = require("./public/world.json");
-var utils = require("./public/libs/utils.js");
-const { lerp_triple } = require('./public/libs/utils.js');
 
 //State that is updated across all clients
 var gameState = {
@@ -67,7 +65,7 @@ io.on('connection', function (socket) {
         let lerpValue = 0.03;
         if(obj.fr < 10) lerpValue = 0.7;
 
-        obj['glow'] = utils.additive_lerp_triple(obj['glow'], newObject.glow, lerpValue);
+        obj['glow'] = additive_lerp_triple(obj['glow'], newObject.glow, lerpValue);
 
         if(obj.img == 'vent'){ //if its a vent then update accel according to its glow
             obj.a = (obj['glow'][0])/255 * 2;
@@ -219,3 +217,15 @@ function isInSquare(x1,y1,x2,y2,w,h){
     let yMax = y2 + (world.scale * h/2);
     return(x1 > xMin && x1 < xMax && y1 > yMin && y1 < yMax);
 }
+
+function additive_lerp_triple(triple1, triple2, lerp_value) { //lerp an array
+    var triple3 = [0,0,0];
+    triple3[0] = additive_lerp(triple1[0],triple2[0], lerp_value);
+    triple3[1] = additive_lerp(triple1[1],triple2[1], lerp_value);
+    triple3[2] = additive_lerp(triple1[2],triple2[2], lerp_value);
+    return triple3;
+  }
+  
+  function additive_lerp(a, b, v) {
+    return a+(b*v);
+  }

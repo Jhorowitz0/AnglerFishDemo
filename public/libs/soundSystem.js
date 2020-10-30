@@ -1,6 +1,3 @@
-
-
-
 //------------------CLASS FOR SOUNDMANAGER------------------
 class SoundSystem {
     constructor() {
@@ -14,21 +11,21 @@ class SoundSystem {
 
     preload() {
         soundFormats('wav','ogg');
-        this.backtrack = loadSound('libs/sounds/underwater');
-        this.chains = loadSound('libs/sounds/Chains');
+        this.backtrack = loadSound(sound_paths.backtrack);
+        this.chains = loadSound(sound_paths.chains);
         this.jellyfish = {
-            1: loadSound('libs/sounds/Jellyfish_Neutral_1'),
-            2: loadSound('libs/sounds/Jellyfish_Neutral_2'),
-            3: loadSound('libs/sounds/Jellyfish_Neutral_3')
+            1: loadSound(sound_paths.jellyfish[0]),
+            2: loadSound(sound_paths.jellyfish[1]),
+            3: loadSound(sound_paths.jellyfish[2])
         }
         this.radio = {
-            1: loadSound('libs/sounds/CaramelDansen_Underwater'),
-            2: loadSound('libs/sounds/Ocean_Man_Underwater'),
-            3: loadSound('libs/sounds/We_Like_to_Party_Underwater')
+            1: loadSound(sound_paths.radio[0]),
+            2: loadSound(sound_paths.radio[1]),
+            3: loadSound(sound_paths.radio[2])
         }
         this.vent = {
-            "rumble": loadSound('libs/sounds/Vent_Rumble'),
-            "bubble": loadSound('libs/sounds/Vent_Bubble')
+            "rumble": loadSound(sound_paths.vent.rumble),
+            "bubble": loadSound(sound_paths.vent.bubble)
         }
         this.callBank = {
             "femaleHappy": {
