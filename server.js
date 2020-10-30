@@ -6,6 +6,8 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 var world = require("./public/world.json");
+let xRange = world.bounds.x.max - world.bounds.x.min;
+let yRange = world.bounds.y.max - world.bounds.y.min;
 
 //State that is updated across all clients
 var gameState = {
@@ -27,8 +29,8 @@ class Player {
         this.femaleID = null,
         this.numAttached = 0,
         this.attached = {},
-        this.x = Math.random(world.bounds.x.min,world.bounds.x.max),
-        this.y = Math.random(world.bounds.y.min,world.bounds.y.max),
+        this.x = (Math.random() * xRange) - xRange/2,
+        this.y = (Math.random() * yRange) - yRange/2,
         this.angle = 0,
         this.isFlipped = false,
         this.wiggleRate = 0,
