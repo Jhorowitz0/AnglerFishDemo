@@ -29,6 +29,11 @@ var sprite_paths = {
     "kelp_stalk" : "./background/stalk.png",
     "chain" : "./background/chain.png",
     "mine" : "./background/mine.png",
+    "jelly_head_1" : "./background/jelly_head_1.png",
+    "jelly_head_2" : "./background/jelly_head_2.png",
+    "jelly_fin_1" : "./background/jelly_fin_1.png",
+    "jelly_fin_2" : "./background/jelly_fin_2.png",
+    "jelly_body" : "./background/jelly_body.png",
     fish_sprites : {
         female_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604037350284",
         male_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_male.png?v=1604037343322",

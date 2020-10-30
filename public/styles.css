@@ -56,8 +56,10 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: black;
-    background-image: url("sprites/anglerfish_loading.gif");
+    /* background-image: url("sprites/anglerfish_loading.gif"); */
+    background-image: url("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Finstructions.png?v=1604037349800");
     background-repeat: no-repeat;
+    background-size: 600px 400px;
     background-position: center;
 }
 

@@ -40,3 +40,36 @@ function drawMine(mine){
     image(worldImages['mine'], mine.nodes[mine.nodes.length-1].x, mine.nodes[mine.nodes.length-1].y,900,700);
     pop();
 }
+
+function drawTentacle(tent){
+    strokeWeight(3);
+    stroke(255);
+    noFill();
+    push();
+    translate(-1 * tent.nodes[0].x,-1 * tent.nodes[0].y);
+    beginShape();
+    for(var i = 1; i < tent.length; i++){
+    curveVertex(tent.nodes[i].x,tent.nodes[i].y)
+      //translate(tent.nodes[i].x,tent.nodes[i].y);
+    }
+    endShape();
+    pop();
+}
+
+function drawJellyFish(jelly){
+    image(worldImages['jelly_body'],0,jelly.size,jelly.size*0.4,jelly.size);
+    for(let i = 0;i < jelly.tents.length;i++){
+        let x = (jelly.x + 
+            (i+0.5) * (jelly.w/jelly.tents.length * 1)) - (jelly.w/2)*1;
+        let y = jelly.y+jelly.h/2;
+        drawTentacle(jelly.tents[i]);
+    }
+    if(jelly.wave > 0){
+        image(worldImages['jelly_fin_1'],0,jelly.h/2+jelly.size/8,jelly.w*0.8,jelly.size/4);
+        image(worldImages['jelly_head_1'],0,0,jelly.w,jelly.h*1.2);
+    }
+    else{
+        image(worldImages['jelly_fin_2'],0,jelly.h/2+jelly.size/8,jelly.w*0.8,jelly.size/4);
+        image(worldImages['jelly_head_2'],0,0,jelly.w,jelly.h*1.2);
+    }
+}

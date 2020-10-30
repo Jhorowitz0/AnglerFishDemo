@@ -16,7 +16,8 @@ var gameState = {
 
 gameState.creatures.forEach(creature => {
     if(creature["type"] == "kelp") creature.obj = new creaturelib.Kelp(creature.x,creature.y,creature.l);
-    else if(creature["type"] == "mine") creature.obj = new creaturelib.Kelp(creature.x,creature.y,creature.l);
+    else if(creature["type"] == "mine") creature.obj = new creaturelib.Mine(creature.x,creature.y,creature.l);
+    else if(creature["type"] == "jellyfish"){creature.obj = new creaturelib.JellyFish(creature.x,creature.y,creature.s);}
 });
 
 //A player instance is created for every client
@@ -113,6 +114,10 @@ setInterval(function() {
     //update the creatures
     gameState.creatures.forEach(creature => {
         creature.obj.update(creature.x, creature.y);
+        if(creature["type"] == "jellyfish"){
+            creature.y += 3*Math.sin(creature.obj.t);
+            // console.log(Math.sin(creature.obj.t));
+        }
     });
 
     //the code below is what dims objects that arnt illuminated

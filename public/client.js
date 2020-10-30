@@ -68,7 +68,12 @@ var objectNames = [
     "vent","vent_glow",
     "kelp_stalk",
     "chain",
-    "mine"
+    "mine",
+    "jelly_head_1",
+    "jelly_head_2",
+    "jelly_fin_1",
+    "jelly_fin_2",
+    "jelly_body"
 ];
 var displace = {x: 0, y: 0};
 
@@ -253,6 +258,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
             translate(displace.x,displace.y);
             if(creature.type == "kelp")drawKelp(creature.obj);
             else if(creature.type == "mine")drawMine(creature.obj);
+            else if(creature.type == "jellyfish")drawJellyFish(creature.obj);
             pop();
         });
 
@@ -267,7 +273,7 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         displace.y = 0 - myInterpPos.y;
         image(worldImages["bounds"],displace.x,displace.y,7800,2000);
 
-        lightingLayer.render(); // Anything drawn past this point goes over lighting!
+        //lightingLayer.render(); // Anything drawn past this point goes over lighting!
 
         drawFeedback(faceReader.getFeedback());
         

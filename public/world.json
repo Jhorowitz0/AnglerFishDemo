@@ -71,11 +71,18 @@
 
         {
             "type":"mine",
-            "x": 0,
+            "x": -1000,
             "y": 600,
             "l": 16,
             "chain_image_path": "./background/chain.png",
             "mine_image_path": "./background/mine.png"
+        },
+
+        {
+            "type":"jellyfish",
+            "x": 0,
+            "y": 0,
+            "s": 300
         }
     ]
 }
