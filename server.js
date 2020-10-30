@@ -1,6 +1,6 @@
 //create a web application that uses the express frameworks and socket.io to communicate via http (the web protocol)
 var express = require('express');
-var creatures = require('./creatures.js');
+var creaturelib = require('./creaturelib.js');
 var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -12,8 +12,13 @@ const { lerp_triple } = require('./public/libs/utils.js');
 //State that is updated across all clients
 var gameState = {
     players: {},
+    creatures: require("./public/world.json").creatures,
     objects: require("./public/world.json").objects
 }
+
+gameState.creatures.forEach(creature => {
+    if(creature["type"] == "kelp") creature.obj = new creaturelib.Kelp(creature.x,creature.y,creature.l);
+});
 
 //A player instance is created for every client
 class Player {

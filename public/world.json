@@ -57,5 +57,17 @@
         {"img" : "rock5", 
             "path" : "./background/rock5.png",
             "x":-2700, "y":340, "w":200, "h":200}
+    ],
+
+    
+    "creatures" : [
+        {
+            "type":"kelp",
+            "x": 0,
+            "y": 300,
+            "l": 10,
+            "stalk_image_path": "./background/stalk.png",
+            "tip_image_path": "./background/tip.png"
+        }
     ]
 }

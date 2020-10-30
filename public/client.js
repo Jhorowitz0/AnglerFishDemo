@@ -252,7 +252,9 @@ let sketch = function(){ //putting our p5 functions in an object allows us to in
         displace.y = 0 - myInterpPos.y;
         image(worldImages["bounds"],displace.x,displace.y,7800,2000);
 
-        lightingLayer.render(); // DON'T DRAW PAST THIS POINT
+        lightingLayer.render(); // Anything drawn past this point goes over lighting!
+        fill(255,0,0);
+        ellipse(100,0,20,20);
         
         //send client info to server
         if(femaleID == null) { //this disables updating if theyre attached to a female THEY LOSE ALL CONTROL
