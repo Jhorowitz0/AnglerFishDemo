@@ -17,5 +17,3 @@ class Player {
         this.emotionF = null
     }
 }
-
-module.exports = Player;

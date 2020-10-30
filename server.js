@@ -107,11 +107,20 @@ setInterval(function() {
 
     //the code below is what dims objects that arnt illuminated
     gameState.objects.forEach(obj => {
-        if('glow' in obj){
-            obj['glow'].map(x => Math.max(x - 5,0));
+        if('glow' in obj) {
+            let glow = obj['glow'];	            
+            let r = (glow[0] - 5)	
+            if(r < 0) r = 0;	            
+            let g = (glow[1] - 5)	                
+            if(g < 0) g = 0;	
+            let b = (glow[2] - 5)	
+            if(b < 0) b = 0;	
+            obj['glow'] = [r,g,b];	
 
-            if(obj.img == 'vent')
-                obj.a = Math.min(obj['glow'][0]/255 * 2, 2);   
+            if(obj.img == 'vent'){	
+                obj.a = r/255 * 2;	
+                if(obj.a > 2) obj.a = 2;	
+            }
         }
     });
 

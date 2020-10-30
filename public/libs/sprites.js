@@ -25,5 +25,24 @@ var sprite_paths = {
     "urchin1" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Furchin1.png?v=1604016445172",
     "urchin2" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Furchin2.png?v=1604016444802",
     "vent" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Fvent.png?v=1604016445322",
-    "vent_glow" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Fvent_glow.png?v=1604016444956"
+    "vent_glow" : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Fvent_glow.png?v=1604016444956",
+    fish_sprites : {
+        female_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338",
+        male_head : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_male.png?v=1604016470520",
+        body : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_body.png?v=1604016468743",
+        tail : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_tail.png?v=1604016471007",
+        fin : "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_fin.png?v=1604016468743",
+        female_head_attached : [
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_1.png?v=1604016468743",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_2.png?v=1604016469106",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_3.png?v=1604016469795",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_4.png?v=1604016469976",
+            "https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_5.png?v=1604016470159"
+        ]
+    },
+    lighting_sprites : {
+        beam : "https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_beam.jpg?v=1602857969217",
+        point : "https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_point.jpg?v=1602857533800"
+    }
 }

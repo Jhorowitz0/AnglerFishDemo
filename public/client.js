@@ -327,21 +327,17 @@ function preload(){
     soundSystem.preload();
 
     // load images into variable fish_sprites
-    fish_sprites.female_head = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338');
-    fish_sprites.male_head = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_male.png?v=1604016470520');
-    fish_sprites.body = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_body.png?v=1604016468743');
-    fish_sprites.tail = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_tail.png?v=1604016471007');
-    fish_sprites.fin = loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_tail.png?v=1604016471007');
-    lighting_sprites.beam = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_beam.jpg?v=1602857969217');
-    lighting_sprites.point = loadImage('https://cdn.glitch.com/919c548a-dc12-455f-9f6c-4742a40eff49%2Flight_point.jpg?v=1602857533800');
+    fish_sprites.female_head = loadImage(sprite_paths.fish_sprites.female_head);
+    fish_sprites.male_head = loadImage(sprite_paths.fish_sprites.male_head);
+    fish_sprites.body = loadImage(sprite_paths.fish_sprites.body);
+    fish_sprites.tail = loadImage(sprite_paths.fish_sprites.tail);
+    fish_sprites.fin = loadImage(sprite_paths.fish_sprites.fin);
+    lighting_sprites.beam = loadImage(sprite_paths.lighting_sprites.beam);
+    lighting_sprites.point = loadImage(sprite_paths.lighting_sprites.point);
 
-    fish_sprites.female_head_attached.push(loadImage('https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female.png?v=1604016470338'));
-    
-    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_1.png?v=1604016468743"));
-    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_2.png?v=1604016469106"));
-    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_3.png?v=1604016469795"));
-    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_4.png?v=1604016469976"));
-    fish_sprites.female_head_attached.push(loadImage("https://cdn.glitch.com/8791ed1a-5597-4f6b-ab24-9025069eda7d%2Ffish_head_female_5.png?v=1604016470159"));
+    for(var i=0; i<6; i++) {
+        fish_sprites.female_head_attached.push(loadImage(sprite_paths.fish_sprites.female_head_attached[i]));
+    }
 }
 
 function setup() {
@@ -350,10 +346,8 @@ function setup() {
     soundSystem.startBacktrack();
 }
 
-
 function draw() {
 }
-
 
 //connected to the server
 function onConnect() {
@@ -368,7 +362,6 @@ function onMessage(msg) {
         console.log("Message from server: " + msg);
     }
 }
-
 
 function onCall(input) {
     let minPan = 800;   //Distances for where panning occurs
